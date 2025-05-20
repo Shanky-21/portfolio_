@@ -20,7 +20,7 @@ const Header = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
+  const debounce = <F extends (...args: never[]) => void>(func: F, waitFor: number) => {
     let timeout: ReturnType<typeof setTimeout> | null = null;
     return (...args: Parameters<F>): void => {
       if (timeout) clearTimeout(timeout);

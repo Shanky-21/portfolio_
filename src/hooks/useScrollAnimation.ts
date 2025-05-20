@@ -10,8 +10,7 @@ interface ScrollAnimationOptions {
 
 // Define a more specific type for the ref if you know it will always be a certain HTML element
 // For generic use, HTMLElement is fine.
-type ElementRefType = React.RefObject<HTMLElement>;
-
+// type ElementRefType = React.RefObject<HTMLElement>; // Removed unused type
 
 export const useScrollAnimation = (options?: ScrollAnimationOptions) => {
   const [isVisible, setIsVisible] = useState(false);
