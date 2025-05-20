@@ -8,7 +8,7 @@ const About = () => {
   const [sectionRef, isSectionVisible] = useScrollAnimation(); // Use hook defaults
 
   // Updated aboutMeText based on resume data
-  const aboutMeText = "I'm a Software Engineer passionate about transforming ideas into tangible, efficient software solutions. At SmartReach.io since June 2022, I've honed my skills in full-stack development, contributing to scalable UIs, optimized backend systems, and impactful API integrations—notably accelerating campaign setups by 10x. I also enjoy building innovative tools, such as CodeSmart.in, a platform leveraging AI to assist coders.";
+  const aboutMeText = "I'm a Software Engineer focused on turning ideas into efficient, reliable software solutions. Since June 2022 at SmartReach.io, I've worked on full-stack development, building scalable user interfaces, optimizing backend systems, and delivering robust API integrations—including improvements that accelerated campaign setups by 10x. I also enjoy creating practical tools, such as CodeSmart.in, a platform designed to help developers write better code.";
 
   return (
     <section 
@@ -32,12 +32,12 @@ const About = () => {
         <div className={`md:w-1/2 text-center lg:text-left flex flex-col items-center lg:items-start gap-[24px]
                         transition-all duration-700 delay-300 ease-out
                         ${isSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-5'}`}> 
-          <h2 className="text-4xl md:text-[72px] font-sora font-bold mb-0 text-left w-full">
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-left w-full">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00A3FF] to-[#00FFF0]">
               About Me
             </span>
           </h2>
-          <p className="text-lg md:text-[28px] text-white font-sora mb-0 leading-relaxed text-left max-w-xl">
+          <p className="text-lg md:text-2xl font-normal leading-relaxed text-white mb-6 text-left">
             {aboutMeText}
           </p>
           <Link 
@@ -45,7 +45,7 @@ const About = () => {
             download
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-sora font-bold py-4 px-8 sm:py-5 sm:px-12 md:py-6 md:px-[72px] rounded-[5px] text-lg sm:text-xl md:text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 inline-block mt-6 lg:mt-0"
+            className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-bold py-4 px-8 sm:py-5 sm:px-12 md:py-6 md:px-[72px] rounded-[5px] text-lg sm:text-xl md:text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 inline-block mt-8"
           >
             😊 Download My Resume
           </Link>
