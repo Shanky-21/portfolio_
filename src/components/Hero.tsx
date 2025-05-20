@@ -23,7 +23,7 @@ const Hero = () => {
             href="#contact"
             className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-sora font-bold py-6 px-[72px] rounded-[5px] text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
           >
-            🚀 Let's Get Started!
+            🚀 Let&apos;s Get Started!
           </Link>
           <a
             href="/Shashank_Dwivedi_Resume.pdf"

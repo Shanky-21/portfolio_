@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaGithub, FaExternalLinkAlt, FaUsers, FaServer, FaCode, FaCreditCard, FaCogs, FaRocket, FaPalette, FaCss3Alt } from 'react-icons/fa'; // Added FaPalette, FaCss3Alt
+import { FaGithub, FaExternalLinkAlt, FaUsers, FaServer, FaCode, FaCreditCard, FaCogs, FaRocket, FaPalette } from 'react-icons/fa';
 
 interface Project {
   name: string;
