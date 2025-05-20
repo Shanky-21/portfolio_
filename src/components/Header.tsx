@@ -13,7 +13,7 @@ const navLinks = [
   { href: "#contact", label: "Contact", id: "contact" },
 ];
 
-const Header  = () => {
+const Header   = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
