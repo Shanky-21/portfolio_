@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { FaDownload } from 'react-icons/fa';
 
 const Hero = () => {
   return (
