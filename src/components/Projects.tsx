@@ -79,7 +79,7 @@ const Projects = () => {
                 />
               </div>
               <div className="md:w-2/3 p-6 md:p-8 flex flex-col">
-                <h3 className="text-3xl font-semibold text-white mb-2">{project.name}</h3>
+                <h3 className="text-2xl md:text-3xl font-semibold text-white mb-2">{project.name}</h3>
                 <p className="text-gray-400 text-sm mb-3">{project.period}</p>
                 <p className="text-gray-300 mb-4 text-base leading-relaxed flex-grow">{project.description}</p>
                 

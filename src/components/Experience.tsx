@@ -147,7 +147,7 @@ const Experience = () => {
               className="mb-10 p-6 md:p-8 bg-[#00040F] rounded-lg shadow-xl border border-gray-700 hover:border-[#00A3FF] transition-colors duration-300 relative"
             >
               <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#00A3FF] to-[#00FFF0] rounded-l-lg"></div>
-              <div className="ml-4">
+              <div className="ml-3 sm:ml-4">
                 <h3 className="text-2xl md:text-3xl font-semibold text-white mb-1">
                   {item.role} 
                   {item.isInternship && <span className="text-lg text-gray-400"> (Intern)</span>}

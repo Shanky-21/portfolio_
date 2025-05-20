@@ -25,12 +25,12 @@ const About = () => {
           <p className="text-lg md:text-[28px] text-white font-sora mb-0 leading-relaxed text-left max-w-xl">
             {aboutMeText}
           </p>
-          <Link 
+          <Link
             href="/Shashank_Dwivedi_Resume.pdf"
             download
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-sora font-bold py-6 px-[72px] rounded-[5px] text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 inline-block mt-6 lg:mt-0"
+            className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-sora font-bold py-4 px-8 sm:py-5 sm:px-12 md:py-6 md:px-[72px] rounded-[5px] text-lg sm:text-xl md:text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 inline-block mt-6 lg:mt-0"
           >
             😉 Download My Resume
           </Link>
