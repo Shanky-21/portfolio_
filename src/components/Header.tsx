@@ -105,6 +105,7 @@ const Header = () => {
               href={link.href}
               className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
               onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
+              aria-current={activeSection === link.id ? 'page' : undefined}
             >
               {link.label}
             </a>
@@ -115,6 +116,7 @@ const Header = () => {
           <button
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
             className="text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#00A3FF] p-2 rounded-md"
           >
             {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -131,6 +133,7 @@ const Header = () => {
                 href={link.href}
                 className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
                 onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
+                aria-current={activeSection === link.id ? 'page' : undefined}
               >
                 {link.label}
               </a>

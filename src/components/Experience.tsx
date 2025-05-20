@@ -1,3 +1,7 @@
+"use client";
+
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+
 interface ExperienceDetailPoint {
   text: string;
   highlights?: string[]; // Added for specific words/phrases to bold
@@ -120,7 +124,7 @@ const HighlightedText = ({ text, highlights }: { text: string; highlights?: stri
     if (highlight.index > lastIndex) {
       parts.push(text.substring(lastIndex, highlight.index));
     }
-    parts.push(<strong key={highlight.index} className="text-amber-400">{highlight.text}</strong>);
+    parts.push(<strong key={highlight.index} className="text-yellow-500">{highlight.text}</strong>);
     lastIndex = highlight.index + highlight.text.length;
   });
 
@@ -132,8 +136,15 @@ const HighlightedText = ({ text, highlights }: { text: string; highlights?: stri
 };
 
 const Experience = () => {
+  const [sectionRef, isSectionVisible] = useScrollAnimation();
+
   return (
-    <section id="experience" className="py-16 md:py-24 bg-[#060C1D]">
+    <section 
+      ref={sectionRef as React.Ref<HTMLElement>}
+      id="experience" 
+      className={`py-16 md:py-24 bg-[#060C1D] transition-all duration-700 ease-out 
+                  ${isSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+    >
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00A3FF] to-[#00FFF0]">
@@ -175,7 +186,7 @@ const Experience = () => {
                         {group.subheading}
                       </h4>
                     )}
-                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-base md:text-lg pl-4">
+                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-base md:text-lg pl-4 leading-relaxed">
                       {group.points.map((point, pointIndex) => (
                         <li key={pointIndex}>
                           <HighlightedText text={point.text} highlights={point.highlights} />

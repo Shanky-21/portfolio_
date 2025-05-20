@@ -1,4 +1,7 @@
+"use client";
+
 import { FaEnvelope, FaPhone, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const contactDetails = {
   email: "shashankdwivedi9648@gmail.com",
@@ -9,8 +12,15 @@ const contactDetails = {
 };
 
 const Contact = () => {
+  const [sectionRef, isSectionVisible] = useScrollAnimation();
+
   return (
-    <section id="contact" className="py-16 md:py-24 bg-[#060C1D]">
+    <section 
+      ref={sectionRef as React.Ref<HTMLElement>}
+      id="contact" 
+      className={`py-16 md:py-24 bg-[#060C1D] transition-all duration-700 ease-out 
+                  ${isSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+    >
       <div className="container mx-auto px-4 md:px-8 text-center">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00A3FF] to-[#00FFF0]">

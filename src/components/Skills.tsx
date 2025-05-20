@@ -1,4 +1,7 @@
+"use client";
+
 import { FaCode, FaPaintBrush, FaCog, FaUsers } from 'react-icons/fa'; // Example icons
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface SkillCategory {
   name: string;
@@ -35,8 +38,15 @@ const skillsData: SkillCategory[] = [
 ];
 
 const Skills = () => {
+  const [sectionRef, isSectionVisible] = useScrollAnimation();
+
   return (
-    <section id="skills" className="py-16 md:py-24 bg-[#00040F]">
+    <section 
+      ref={sectionRef as React.Ref<HTMLElement>}
+      id="skills" 
+      className={`py-16 md:py-24 bg-[#00040F] transition-all duration-700 ease-out 
+                  ${isSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+    >
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00A3FF] to-[#00FFF0]">
