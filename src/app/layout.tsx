@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Sora } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const sora = Sora({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Shashank Dwivedi - Software Engineer",
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
-      <body className={`${sora.className} bg-[#00040F] text-white antialiased`}>
+      <body className={`${inter.className} bg-[#00040F] text-white antialiased`}>
         <Header />
         <main className="min-h-screen">
           {children}
