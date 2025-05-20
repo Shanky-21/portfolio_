@@ -314,7 +314,7 @@ const Experience = () => {
                   {item.techStack && item.techStack.length > 0 && (
                     <div className="mb-4 sm:mb-5">
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {item.techStack.map((tech, techIndex) => {
+                        {item.techStack.map((tech) => {
                           const Icon = iconMap[tech] || FaCogs;
                           return (
                             <span 
