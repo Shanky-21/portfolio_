@@ -7,7 +7,8 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'; // Import the h
 const About = () => {
   const [sectionRef, isSectionVisible] = useScrollAnimation(); // Use hook defaults
 
-  const aboutMeText = `Bringing modern technologies into the real world is my DNA. Worked on multiple startups and governmental projects to get the ideas into real-world mobile and web applications and developed successful Educational startups in Uzbekistan.`;
+  // Updated aboutMeText based on resume data
+  const aboutMeText = "I'm a Software Engineer passionate about transforming ideas into tangible, efficient software solutions. At SmartReach.io since June 2022, I've honed my skills in full-stack development, contributing to scalable UIs, optimized backend systems, and impactful API integrations—notably accelerating campaign setups by 10x. I also enjoy building innovative tools, such as CodeSmart.in, a platform leveraging AI to assist coders.";
 
   return (
     <section 
@@ -46,7 +47,7 @@ const About = () => {
             rel="noopener noreferrer"
             className="bg-[#0B8DCD] hover:bg-opacity-80 text-white font-sora font-bold py-4 px-8 sm:py-5 sm:px-12 md:py-6 md:px-[72px] rounded-[5px] text-lg sm:text-xl md:text-[24px] shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 inline-block mt-6 lg:mt-0"
           >
-            😉 Download My Resume
+            😊 Download My Resume
           </Link>
         </div>
       </div>

@@ -26,6 +26,7 @@ const Hero = () => {
           >
             🚀 Let&apos;s Get Started!
           </Link>
+          {/* The Download Resume button below will be removed 
           <a
             href="/Shashank_Dwivedi_Resume.pdf"
             download
@@ -36,6 +37,7 @@ const Hero = () => {
             <FaDownload />
             <span>Download Resume</span>
           </a>
+          */}
         </div>
       </div>
     </section>
