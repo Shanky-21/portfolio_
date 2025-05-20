@@ -2,6 +2,7 @@
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { FaCode, FaServer, FaPalette, FaCreditCard, FaCogs, FaRocket, FaDatabase, FaTools, FaMicrochip } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 interface ExperienceDetailPoint {
   text: string;
@@ -175,15 +176,83 @@ const HighlightedText = ({ text, highlights, highlightClassName }: { text: strin
 
 const Experience = () => {
   const [sectionRef, isSectionVisible] = useScrollAnimation();
+  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, speed: number, opacity: number}>>([]);
+
+  // Generate particles for the tech background
+  useEffect(() => {
+    const generateParticles = () => {
+      const newParticles = [];
+      const particleCount = window.innerWidth < 768 ? 25 : 50; // Fewer particles on mobile
+      
+      for (let i = 0; i < particleCount; i++) {
+        newParticles.push({
+          id: i,
+          x: Math.random() * 100, // % position
+          y: Math.random() * 100, // % position
+          size: Math.random() * 2 + 1, // Size between 1-3px
+          speed: Math.random() * 0.5 + 0.1, // Speed between 0.1-0.6
+          opacity: Math.random() * 0.5 + 0.3 // Opacity between 0.3-0.8
+        });
+      }
+      
+      setParticles(newParticles);
+    };
+
+    generateParticles();
+    
+    const handleResize = () => {
+      generateParticles();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Move particles
+  useEffect(() => {
+    if (!isSectionVisible) return;
+    
+    const interval = setInterval(() => {
+      setParticles(current => 
+        current.map(particle => ({
+          ...particle,
+          y: (particle.y + particle.speed) % 100, // Loop back to top when reaching bottom
+          x: particle.x + (Math.sin(particle.y / 20) * 0.1) // Slight sideways movement
+        }))
+      );
+    }, 50);
+    
+    return () => clearInterval(interval);
+  }, [isSectionVisible]);
 
   return (
     <section 
       ref={sectionRef as React.Ref<HTMLElement>}
       id="experience" 
-      className={`py-16 md:py-24 bg-[#060C1D] transition-all duration-700 ease-out 
+      className={`py-16 md:py-24 bg-[#060C1D] transition-all duration-700 ease-out relative overflow-hidden
                   ${isSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
     >
-      <div className="container mx-auto px-4 md:px-8">
+      {/* Falling particles background */}
+      <div className="absolute inset-0">
+        {/* Animated particles */}
+        {particles.map(particle => (
+          <div
+            key={particle.id}
+            className="absolute rounded-full bg-[#00FFF0] transition-opacity duration-1000 pointer-events-none"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              opacity: particle.opacity,
+              boxShadow: `0 0 ${particle.size * 2}px ${particle.size}px rgba(0, 255, 240, 0.5)`,
+              zIndex: 1
+            }}
+          />
+        ))}
+      </div>
+      
+      <div className="container mx-auto px-4 md:px-8 relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 md:mb-16">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00A3FF] to-[#00FFF0]">
             Work Experience
@@ -194,7 +263,16 @@ const Experience = () => {
           <div className="absolute left-4 sm:left-8 top-0 w-[2px] bg-gradient-to-b from-[#00A3FF]/60 to-[#00FFF0]/30 h-full rounded-full z-0 transform -translate-x-1/2" />
           <div className="flex flex-col gap-12 sm:gap-16">
             {experienceData.map((item, index) => (
-              <div key={index} className="relative flex items-start">
+              <div 
+                key={index} 
+                className={`relative flex items-start transition-all duration-700 ease-out 
+                           ${isSectionVisible ? 
+                              'opacity-100 translate-y-0' : 
+                              'opacity-0 translate-y-16'}`}
+                style={{ 
+                  transitionDelay: isSectionVisible ? `${index * 200}ms` : '0ms'
+                }}
+              >
                 {/* Timeline dot container - narrower on mobile */}
                 <div className="flex-shrink-0 w-8 sm:w-16 flex flex-col items-center">
                   {/* Timeline dot - slightly smaller on mobile */}
@@ -204,8 +282,9 @@ const Experience = () => {
                       : 'bg-gradient-to-br from-[#00A3FF] to-[#00FFF0] border-[#060C1D]'
                   }`} />
                 </div>
-                {/* Card content */}
-                <div className="ml-3 sm:ml-6 flex-1 bg-gradient-to-br from-[#0a162f] via-[#00040F] to-[#0a162f] rounded-2xl shadow-2xl border border-[#1a2233] hover:border-[#00A3FF] transition-colors duration-300 p-4 sm:p-7 md:p-10">
+                
+                {/* Card content with glass effect */}
+                <div className="ml-3 sm:ml-6 flex-1 bg-gradient-to-br from-[#0a162f]/90 via-[#00040F]/90 to-[#0a162f]/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-[#1a2233] hover:border-[#00A3FF] transition-all duration-300 p-4 sm:p-7 md:p-10 hover:shadow-[0_0_25px_rgba(0,163,255,0.15)] hover:-translate-y-1">
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-2">
                     {item.role} 
                     {item.isInternship && <span className="text-base sm:text-lg text-gray-400"> (Intern)</span>}
@@ -238,7 +317,10 @@ const Experience = () => {
                         {item.techStack.map((tech) => {
                           const Icon = iconMap[tech] || FaCogs;
                           return (
-                            <span key={tech} className="flex items-center bg-[#1a2233] text-gray-200 px-2 py-1 rounded-md text-xs font-medium shadow-sm border border-gray-700 hover:border-[#00A3FF] transition-colors duration-200">
+                            <span 
+                              key={tech} 
+                              className="flex items-center bg-[#1a2233] text-gray-200 px-2 py-1 rounded-md text-xs font-medium shadow-sm border border-gray-700 hover:border-[#00A3FF] transition-all duration-300 hover:bg-[#1e2b45] hover:transform hover:scale-105"
+                            >
                               <Icon className="mr-1 text-[#00A3FF]" size={12} /> {tech}
                             </span>
                           );
@@ -248,7 +330,10 @@ const Experience = () => {
                   )}
 
                   {item.detailGroups.map((group, groupIndex) => (
-                    <div key={groupIndex} className="mb-3 sm:mb-4">
+                    <div 
+                      key={groupIndex} 
+                      className="mb-3 sm:mb-4"
+                    >
                       {group.subheading && (
                         <h4 className="text-base sm:text-lg md:text-xl font-semibold text-sky-300 mb-1 sm:mb-2 mt-3 sm:mt-4">
                           {group.subheading}
@@ -256,7 +341,10 @@ const Experience = () => {
                       )}
                       <ul className="list-disc list-inside space-y-1.5 sm:space-y-2 text-gray-300 text-sm sm:text-base md:text-lg pl-2 sm:pl-4 leading-relaxed">
                         {group.points.map((point, pointIndex) => (
-                          <li key={pointIndex}>
+                          <li 
+                            key={pointIndex}
+                            className="hover:text-white transition-colors duration-200"
+                          >
                             <HighlightedText 
                               text={point.text} 
                               highlights={point.highlights} 
