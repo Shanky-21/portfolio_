@@ -1,7 +1,7 @@
 "use client";
 
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { FaCode, FaServer, FaPalette, FaUsers, FaCreditCard, FaCogs, FaRocket, FaDatabase, FaTools, FaMicrochip } from 'react-icons/fa';
+import { FaCode, FaServer, FaPalette, FaCreditCard, FaCogs, FaRocket, FaDatabase, FaTools, FaMicrochip } from 'react-icons/fa';
 
 interface ExperienceDetailPoint {
   text: string;
