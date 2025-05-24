@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaGithub, FaExternalLinkAlt, FaUsers, FaServer, FaCode, FaCreditCard, FaCogs, FaRocket, FaPalette } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaUsers, FaServer, FaCode, FaCreditCard, FaCogs, FaRocket, FaPalette, FaCheck, FaClipboardCheck, FaClock } from 'react-icons/fa';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface Project {
@@ -73,71 +73,96 @@ const Projects = () => {
             My Projects
           </span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 gap-12 md:gap-16">
           {projectsData.map((project) => (
             <div 
               key={project.name} 
-              className="bg-[#060C1D] rounded-lg shadow-xl overflow-hidden border border-gray-700 hover:border-[#00A3FF] transition-all duration-300 flex flex-col md:flex-row"
+              className="bg-gradient-to-br from-[#0a162f] via-[#00040F] to-[#0a162f] rounded-2xl shadow-2xl overflow-hidden border border-[#1a2233] hover:border-[#00A3FF] transition-all duration-300 transform hover:scale-[1.01] hover:shadow-[0_0_15px_rgba(0,163,255,0.15)]"
             >
-              <div className="md:w-1/3 relative min-h-[250px] md:min-h-full">
-                <Image 
-                  src={project.image} 
-                  alt={project.name} 
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 767px) 100vw, 33vw"
-                />
-              </div>
-              <div className="md:w-2/3 p-6 md:p-8 flex flex-col">
-                <h3 className="text-2xl md:text-3xl font-semibold text-white mb-2">{project.name}</h3>
-                <p className="text-gray-400 text-sm mb-3">{project.period}</p>
-                <p className="text-gray-300 mb-4 text-base leading-relaxed flex-grow">{project.description}</p>
-                
-                <div className="mb-4">
-                  <h4 className="text-lg font-semibold text-gray-200 mb-2">Key Features:</h4>
-                  <ul className="list-disc list-inside space-y-1 text-gray-300 text-sm">
-                    {project.features.slice(0, 4).map((feature, i) => <li key={i}>{feature}</li>)}
-                    {project.features.length > 4 && <li>...and more!</li>}
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-200 mb-2">Tech Stack:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => {
-                      const Icon = iconMap[tech] || FaCogs;
-                      return (
-                        <span key={tech} className="flex items-center bg-gray-700 text-gray-200 px-3 py-1 rounded-md text-xs font-medium shadow-sm">
-                          <Icon className="mr-1.5" /> {tech}
-                        </span>
-                      );
-                    })}
+              {/* Project header with title, period, links */}
+              <div className="p-6 md:p-8 border-b border-gray-800">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-semibold text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">{project.name}</h3>
+                    <div className="flex items-center gap-2 mb-3">
+                      <FaClock className="text-[#00A3FF]" />
+                      <p className="text-gray-400 text-sm">{project.period}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
+                    {project.liveLink && (
+                      <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-[#0B8DCD] hover:bg-opacity-80 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105 shadow-md">
+                        <FaExternalLinkAlt className="mr-2" /> Live Demo
+                      </Link>
+                    )}
+                    {project.githubLink && (
+                      <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center border border-[#00A3FF] hover:bg-[#00A3FF] hover:text-[#00040F] text-[#00A3FF] py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105 shadow-md">
+                        <FaGithub className="mr-2" /> GitHub
+                      </Link>
+                    )}
+                    {project.chromeExtensionLink && (
+                      <Link href={project.chromeExtensionLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center border border-purple-500 hover:bg-purple-500 hover:text-white text-purple-400 py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105 shadow-md">
+                        <FaCogs className="mr-2" /> Chrome Extension
+                      </Link>
+                    )}
                   </div>
                 </div>
+              </div>
+              
+              {/* Project content */}
+              <div className="flex flex-col lg:flex-row">
+                {/* Image container - responsive */}
+                <div className="lg:w-2/5 relative h-[240px] sm:h-[320px] lg:h-auto overflow-hidden bg-gradient-to-br from-[#060C1D] to-[#00040F]">
+                  <Image 
+                    src={project.image} 
+                    alt={project.name} 
+                    fill
+                    className="object-contain p-4 transition-transform duration-500 ease-in-out transform hover:scale-105"
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 100vw, 40vw"
+                  />
+                </div>
+                
+                {/* Content container */}
+                <div className="lg:w-3/5 p-6 md:p-8">
+                  <p className="text-gray-300 mb-6 text-base leading-relaxed">{project.description}</p>
+                  
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-[#00A3FF] mb-3 flex items-center">
+                      <FaClipboardCheck className="mr-2" /> Key Features
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {project.features.map((feature, i) => (
+                        <div key={i} className="flex items-start text-gray-300 text-sm">
+                          <FaCheck className="text-[#00A3FF] mt-1 mr-2 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-                <div className="mt-auto flex flex-wrap gap-3 items-center">
-                  {project.liveLink && (
-                    <Link href={project.liveLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-[#0B8DCD] hover:bg-opacity-80 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105">
-                      <FaExternalLinkAlt className="mr-2" /> Live Demo
-                    </Link>
-                  )}
-                  {project.githubLink && (
-                    <Link href={project.githubLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center border border-[#00A3FF] hover:bg-[#00A3FF] hover:text-[#00040F] text-[#00A3FF] py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105">
-                      <FaGithub className="mr-2" /> GitHub
-                    </Link>
-                  )}
-                  {project.chromeExtensionLink && (
-                     <Link href={project.chromeExtensionLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center border border-purple-500 hover:bg-purple-500 hover:text-white text-purple-400 py-2 px-4 rounded-md text-sm font-medium transition-colors transform hover:scale-105">
-                      <FaCogs className="mr-2" /> Chrome Extension
-                    </Link>
+                  <div>
+                    <h4 className="text-lg font-semibold text-[#00A3FF] mb-3 flex items-center">
+                      <FaCode className="mr-2" /> Tech Stack
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.map((tech) => {
+                        const Icon = iconMap[tech] || FaCogs;
+                        return (
+                          <span key={tech} className="flex items-center bg-[#1a2233] text-gray-200 px-3 py-1.5 rounded-md text-xs font-medium shadow-sm border border-gray-700 hover:border-[#00A3FF] transition-colors duration-200">
+                            <Icon className="mr-1.5 text-[#00A3FF]" /> {tech}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  
+                  {(project.userCount || project.teamSize) && (
+                    <div className="mt-6 text-sm text-gray-400 flex items-center gap-6 border-t border-gray-800 pt-4">
+                      {project.teamSize && <span className="flex items-center"><FaUsers className="text-[#00A3FF] mr-2" /> Team of {project.teamSize}</span>}
+                      {project.userCount && <span className="flex items-center"><FaUsers className="text-[#00A3FF] mr-2" /> {project.userCount}</span>}
+                    </div>
                   )}
                 </div>
-                {(project.userCount || project.teamSize) && (
-                    <div className="mt-4 text-xs text-gray-500 flex items-center gap-4">
-                        {project.teamSize && <span><FaUsers className="inline mr-1" /> Team of {project.teamSize}</span>}
-                        {project.userCount && <span><FaUsers className="inline mr-1" /> {project.userCount}</span>}
-                    </div>
-                )}
               </div>
             </div>
           ))}
