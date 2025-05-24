@@ -357,7 +357,7 @@ const LearningPage: React.FC = () => {
       if (a.unlocked === b.unlocked) return 0;
       return a.unlocked ? -1 : 1;
     });
-  }, [timePeriods, uniqueTopics, mostStudiedTopic]);
+  }, [timePeriods, uniqueTopics, mostStudiedTopic, filteredData]);
   
   const unlockedAchievements = useMemo(() => 
     achievements.filter(a => a.unlocked).length

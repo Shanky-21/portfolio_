@@ -40,19 +40,6 @@ interface LearningTrendProps {
 // Daily study goal in minutes
 const DAILY_GOAL = 300; // 5 hours in minutes
 
-// Utility function to format time in hours and minutes
-const formatTimeDisplay = (minutes: number) => {
-  if (minutes < 60) {
-    return `${minutes} minutes`;
-  }
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  if (remainingMinutes === 0) {
-    return `${hours} hour${hours !== 1 ? 's' : ''}`;
-  }
-  return `${hours} hour${hours !== 1 ? 's' : ''} ${remainingMinutes} min`;
-};
-
 const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) => {
   // State for selected point on the chart
   const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
@@ -176,7 +163,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
     prevDate = null;
     
     for (let i = 0; i < sortedDates.length; i++) {
-      const [dateStr, _] = sortedDates[i];
+      const [dateStr] = sortedDates[i];
       const date = new Date(dateStr);
       
       if (prevDate === null) {
