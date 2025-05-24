@@ -227,14 +227,14 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
         </div>
         
         <div className="flex items-center gap-3">
-          <button 
+          {/* <button 
             onClick={exportData}
             className="text-xs flex items-center gap-1 px-2 py-1 bg-[#0B1935] hover:bg-[#132456] rounded border border-gray-700 text-gray-300 transition-colors"
             title="Export data as CSV"
           >
             <FaDownload size={10} />
             <span>Export</span>
-          </button>
+          </button> */}
           
           <div className="relative">
             <div 
