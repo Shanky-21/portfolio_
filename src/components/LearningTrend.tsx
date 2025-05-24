@@ -349,7 +349,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
   
   return (
     <div className="bg-[#0A1124] rounded-lg shadow-xl border border-gray-800 p-6">
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-4">
         <div>
           <h2 className="text-xl font-semibold text-white flex items-center">
             <FaChartLine className="mr-2 text-[#00A3FF]" />
@@ -359,7 +359,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
           <p className="text-sm text-gray-400 mt-1">{dateRangeText}</p>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="text-sm px-3 py-1 rounded-md bg-[#101935] text-gray-300">
             Total: <span className="font-semibold text-white">
               {totalWeekMinutes >= 60 ? `${Math.floor(totalWeekMinutes / 60)}h ${totalWeekMinutes % 60}m` : `${totalWeekMinutes} min`}

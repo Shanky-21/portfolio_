@@ -584,20 +584,20 @@ const LearningPage: React.FC = () => {
               </span>
             </h2>
             
-            <div className="mt-4 md:mt-0 flex items-center gap-6">
-              <div className="flex flex-col items-center">
+            <div className="mt-4 md:mt-0 flex flex-col items-start md:flex-row md:items-center gap-4 md:gap-6">
+              <div className="flex flex-col items-start md:items-center">
                 <div className="text-sm text-gray-400">Weekly Goal</div>
                 <div className="text-lg font-semibold text-white">{Math.floor(WEEKLY_GOAL / 60)} hours</div>
               </div>
               
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-start md:items-center">
                 <div className="text-sm text-gray-400">Monthly Goal</div>
                 <div className="text-lg font-semibold text-white">{Math.floor(MONTHLY_GOAL / 60)} hours</div>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {achievements.map(achievement => (
               <div 
                 key={achievement.id}

@@ -214,19 +214,19 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
   
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-3">
-        <div className="flex items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+        <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-0">
           <h2 className="text-xl font-semibold text-white flex items-center">
             <FaRegCalendarAlt className="mr-2 text-[#00A3FF]" />
             Learning Activity
             {selectedTopic !== "All" && <span className="ml-2 text-sm font-normal text-gray-400">({selectedTopic})</span>}
           </h2>
-          <p className="ml-4 text-sm text-gray-400">
+          <p className="xs:ml-4 text-sm text-gray-400">
             {dateRangeText}
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-2 sm:mt-0">
           {/* <button 
             onClick={exportData}
             className="text-xs flex items-center gap-1 px-2 py-1 bg-[#0B1935] hover:bg-[#132456] rounded border border-gray-700 text-gray-300 transition-colors"
@@ -238,7 +238,7 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
           
           <div className="relative">
             <div 
-              className="flex items-center gap-1 text-xs cursor-pointer"
+              className="flex flex-wrap items-center gap-1 text-xs cursor-pointer"
               onMouseEnter={() => setShowLegendInfo(true)}
               onMouseLeave={() => setShowLegendInfo(false)}
             >
@@ -296,7 +296,7 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
       </div>
       
       <div className="bg-[#0d1117] rounded-lg overflow-x-auto border border-gray-800">
-        <div className="px-2 py-4 max-w-full">
+        <div className="px-2 py-4 min-w-[650px]">
           <CalendarHeatmap
             startDate={startDate}
             endDate={endDate}
