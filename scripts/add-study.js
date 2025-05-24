@@ -120,19 +120,20 @@ const printRecentSessions = (data, limit = 5) => {
   const recentSessions = data.slice(-limit).reverse();
   
   console.log(`\n${colors.cyan}${colors.bright}Recent Study Sessions:${colors.reset}`);
-  console.log('┌──────────────┬────────────────────┬─────────┐');
-  console.log('│ Date         │ Topic              │ Minutes │');
-  console.log('├──────────────┼────────────────────┼─────────┤');
+  console.log('┌──────────────┬────────────────────┬─────────┬─────────────────┐');
+  console.log('│ Date         │ Topic              │ Minutes │ Notes           │');
+  console.log('├──────────────┼────────────────────┼─────────┼─────────────────┤');
   
   recentSessions.forEach(session => {
     const date = session.date.padEnd(12, ' ');
     const topic = session.topic.padEnd(20, ' ');
     const minutes = String(session.minutes).padStart(7, ' ');
+    const notes = session.notes ? session.notes.substring(0, 15).padEnd(15, ' ') : ''.padEnd(15, ' ');
     
-    console.log(`│ ${date}│ ${topic}│ ${minutes} │`);
+    console.log(`│ ${date}│ ${topic}│ ${minutes} │ ${notes} │`);
   });
   
-  console.log('└──────────────┴────────────────────┴─────────┘');
+  console.log('└──────────────┴────────────────────┴─────────┴─────────────────┘');
 };
 
 // Function to handle topic autocomplete
@@ -217,7 +218,8 @@ const addStudySession = () => {
     if (existingSessions.length > 0) {
       console.log(`\n${colors.yellow}Existing sessions for ${date}:${colors.reset}`);
       existingSessions.forEach(session => {
-        console.log(`  • ${session.topic}: ${session.minutes} minutes`);
+        const notesInfo = session.notes ? ` - Notes: ${session.notes}` : '';
+        console.log(`  • ${session.topic}: ${session.minutes} minutes${notesInfo}`);
       });
       const totalTime = getTotalTimeForDate(currentData, date);
       console.log(`  ${colors.yellow}Total: ${totalTime} minutes${colors.reset}\n`);
@@ -245,34 +247,41 @@ const addStudySession = () => {
           return;
         }
         
-        // Create new session
-        const newSession = {
-          date,
-          topic,
-          minutes
-        };
-        
-        // Add to data and save
-        currentData.push(newSession);
-        
-        if (writeData(currentData)) {
-          console.log(`\n${colors.green}${colors.bright}✅ Added: ${minutes} minutes studying ${topic} on ${date}${colors.reset}`);
+        rl.question(`${colors.bright}Notes${colors.reset} (optional): `, (notes) => {
+          // Create new session
+          const newSession = {
+            date,
+            topic,
+            minutes
+          };
           
-          // Show total study time for this topic
-          const topicTotal = currentData
-            .filter(session => session.topic === topic)
-            .reduce((sum, session) => sum + session.minutes, 0);
+          // Add notes if provided
+          if (notes.trim()) {
+            newSession.notes = notes.trim();
+          }
+          
+          // Add to data and save
+          currentData.push(newSession);
+          
+          if (writeData(currentData)) {
+            console.log(`\n${colors.green}${colors.bright}✅ Added: ${minutes} minutes studying ${topic} on ${date}${colors.reset}`);
             
-          console.log(`${colors.green}Total time spent on ${topic}: ${topicTotal} minutes (${Math.floor(topicTotal/60)} hours, ${topicTotal % 60} minutes)${colors.reset}`);
+            // Show total study time for this topic
+            const topicTotal = currentData
+              .filter(session => session.topic === topic)
+              .reduce((sum, session) => sum + session.minutes, 0);
+              
+            console.log(`${colors.green}Total time spent on ${topic}: ${topicTotal} minutes (${Math.floor(topicTotal/60)} hours, ${topicTotal % 60} minutes)${colors.reset}`);
+            
+            // Show updated daily total
+            const updatedDailyTotal = getTotalTimeForDate(currentData, date);
+            console.log(`${colors.green}Total time spent on ${date}: ${updatedDailyTotal} minutes${colors.reset}`);
+          } else {
+            console.error(`\n${colors.red}❌ Failed to save the study session.${colors.reset}`);
+          }
           
-          // Show updated daily total
-          const updatedDailyTotal = getTotalTimeForDate(currentData, date);
-          console.log(`${colors.green}Total time spent on ${date}: ${updatedDailyTotal} minutes${colors.reset}`);
-        } else {
-          console.error(`\n${colors.red}❌ Failed to save the study session.${colors.reset}`);
-        }
-        
-        rl.close();
+          rl.close();
+        });
       });
     });
   });
