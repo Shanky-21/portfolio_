@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
@@ -13,7 +14,14 @@ const navLinks = [
   { href: "#contact", label: "Contact", id: "contact" },
 ];
 
-const Header   = () => {
+// Separate array for page links (not hash links)
+const pageLinks = [
+  { href: "/learning", label: "Learning Journey", id: "learning" }
+];
+
+const Header = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -29,6 +37,9 @@ const Header   = () => {
   };
 
   const handleScroll = useCallback(() => {
+    // Only activate scroll detection on home page
+    if (pathname !== '/') return;
+
     let newActiveSection = '';
     const offset = 70; // Threshold from the top of the viewport
 
@@ -56,7 +67,7 @@ const Header   = () => {
     if (activeSection !== newActiveSection) {
       setActiveSection(newActiveSection);
     }
-  }, [activeSection]);
+  }, [activeSection, pathname]);
 
   useEffect(() => {
     const debouncedScrollHandler = debounce(handleScroll, 30); // Slightly faster debounce
@@ -69,13 +80,25 @@ const Header   = () => {
   const handleLogoClick = () => {
     closeMobileMenu();
     setActiveSection('');
+    
+    // If not on homepage, navigate to home
+    if (pathname !== '/') {
+      router.push('/');
+    }
   };
 
   const handleNavLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string, targetId: string) => {
     event.preventDefault(); 
-
+    closeMobileMenu();
+    
+    // If on a different page, navigate to homepage with hash
+    if (pathname !== '/') {
+      router.push(`/${href}`);
+      return;
+    }
+    
+    // If already on homepage, do smooth scroll
     setActiveSection(targetId); 
-    closeMobileMenu();    
 
     const element = document.getElementById(targetId);
     if (element) {
@@ -99,16 +122,29 @@ const Header   = () => {
         </Link>
 
         <div className="hidden md:flex space-x-6">
+          {/* Hash-based nav links */}
           {navLinks.map((link) => (
             <a
               key={link.id}
               href={link.href}
-              className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+              className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${pathname === '/' && activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
               onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
-              aria-current={activeSection === link.id ? 'page' : undefined}
+              aria-current={pathname === '/' && activeSection === link.id ? 'page' : undefined}
             >
               {link.label}
             </a>
+          ))}
+          
+          {/* Page links */}
+          {pageLinks.map((link) => (
+            <Link
+              key={link.id}
+              href={link.href}
+              className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+              onClick={closeMobileMenu}
+            >
+              {link.label}
+            </Link>
           ))}
         </div>
 
@@ -127,16 +163,29 @@ const Header   = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-[#00040F] bg-opacity-95 backdrop-blur-md shadow-lg py-4 z-40">
           <div className="container mx-auto flex flex-col items-center space-y-4 px-4">
+            {/* Hash-based nav links */}
             {navLinks.map((link) => (
               <a
                 key={link.id}
                 href={link.href}
-                className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+                className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${pathname === '/' && activeSection === link.id ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
                 onClick={(e) => handleNavLinkClick(e, link.href, link.id)}
-                aria-current={activeSection === link.id ? 'page' : undefined}
+                aria-current={pathname === '/' && activeSection === link.id ? 'page' : undefined}
               >
                 {link.label}
               </a>
+            ))}
+            
+            {/* Page links */}
+            {pageLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={link.href}
+                className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+                onClick={closeMobileMenu}
+              >
+                {link.label}
+              </Link>
             ))}
           </div>
         </div>
