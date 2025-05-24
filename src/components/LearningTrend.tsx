@@ -11,9 +11,12 @@ import {
   Title, 
   Tooltip as ChartTooltip, 
   Legend,
-  Filler
+  Filler,
+  ChartOptions,
+  TooltipItem,
+  ChartData
 } from 'chart.js';
-import { subDays, format, isWithinInterval, parseISO } from 'date-fns';
+import { subDays, format, parseISO } from 'date-fns';
 import { StudySession } from './LearningHeatmap';
 import { FaChartLine } from 'react-icons/fa';
 
@@ -48,7 +51,6 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
   
   // Use most recent date as the reference for "today"
   const referenceDate = getMostRecentDate;
-  const lastWeekStart = subDays(referenceDate, 6); // Get last 7 days including reference date
   
   // Filter data for the last week and by selected topic
   const recentData = useMemo(() => {
@@ -101,7 +103,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
   }, [recentData]);
   
   // Chart data and options
-  const chartData = {
+  const chartData: ChartData<'line', number[], string> = {
     labels: recentData.map(day => day.formattedDate),
     datasets: [
       {
@@ -118,7 +120,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
     ],
   };
   
-  const chartOptions: any = {
+  const chartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -129,7 +131,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
         },
         ticks: {
           color: '#7d8590',
-          callback: function(value: any) {
+          callback: function(value: number | string) {
             return `${value} min`;
           },
         },
@@ -161,10 +163,10 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
         padding: 10,
         displayColors: false,
         callbacks: {
-          title: function(tooltipItems: any) {
+          title: function(tooltipItems: TooltipItem<'line'>[]) {
             return tooltipItems[0].label;
           },
-          label: function(context: any) {
+          label: function(context: TooltipItem<'line'>) {
             const minutes = context.parsed.y;
             return `${minutes} minutes studied`;
           }
@@ -229,7 +231,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
         <div className="h-64 w-full flex items-center justify-center flex-col bg-[#101935] rounded-lg border border-gray-800">
           <p className="text-gray-400">No learning activity recorded in this period</p>
           {selectedTopic !== "All" && (
-            <p className="text-gray-500 text-sm mt-2">Try selecting a different topic or "All"</p>
+            <p className="text-gray-500 text-sm mt-2">Try selecting a different topic or &quot;All&quot;</p>
           )}
         </div>
       )}

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { StudySession } from './LearningHeatmap';
-import { FaFilter, FaSearch, FaTimes, FaSortAmountDown } from 'react-icons/fa';
+import { FaFilter, FaSearch, FaTimes } from 'react-icons/fa';
 
 interface TopicFilterProps {
   data: StudySession[];

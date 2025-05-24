@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import CalendarHeatmap from 'react-calendar-heatmap';
+import CalendarHeatmap, { CalendarHeatmapValue } from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
-import { subDays, format, eachDayOfInterval, parseISO, isWithinInterval, endOfYear, startOfYear } from 'date-fns';
+import { subDays, format, eachDayOfInterval, parseISO, isWithinInterval } from 'date-fns';
 import 'react-calendar-heatmap/dist/styles.css';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
@@ -12,12 +12,6 @@ export interface StudySession {
   date: string;
   topic: string;
   minutes: number;
-}
-
-interface HeatmapValue {
-  date: string;
-  count: number;
-  topics?: Record<string, number>;
 }
 
 interface LearningHeatmapProps {
@@ -134,14 +128,27 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     [allDatesInRange]
   );
   
-  // Count days with activity
-  const activeDays = useMemo(() => 
-    allDatesInRange.filter(day => day.count > 0).length,
-    [allDatesInRange]
-  );
+  // Determine if we're showing a single year view
+  const isSingleYearView = useMemo(() => {
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+    return startYear === endYear;
+  }, [startDate, endDate]);
+  
+  // Determine the text to display for the date range
+  const dateRangeText = useMemo(() => {
+    if (isSingleYearView) {
+      return `${totalStudyMinutes} minutes in ${startDate.getFullYear()}`;
+    } else {
+      // If showing data from more than one year, specify the range
+      const fromYear = startDate.getFullYear();
+      const toYear = endDate.getFullYear();
+      return `${totalStudyMinutes} minutes from ${fromYear} to ${toYear}`;
+    }
+  }, [isSingleYearView, startDate, endDate, totalStudyMinutes]);
   
   // Format tooltip content
-  const getTooltipContent = (value: HeatmapValue | null) => {
+  const getTooltipContent = (value: CalendarHeatmapValue | null) => {
     if (!value || !value.date) {
       return 'Outside of range';
     }
@@ -157,7 +164,7 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     
     // If we're showing all topics and have topic breakdown, show it
     if (selectedTopic === "All" && value.topics) {
-      const topicList = Object.entries(value.topics)
+      const topicList = Object.entries(value.topics as Record<string, number>)
         .sort((a, b) => b[1] - a[1])
         .map(([topic, mins]) => `<div class="ml-2 mt-1">• <span class="text-[#8b949e]">${topic}:</span> ${mins} min</div>`)
         .join('');
@@ -169,31 +176,6 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     
     return content;
   };
-  
-  // Determine if we're showing a single year view
-  const isSingleYearView = useMemo(() => {
-    const startYear = startDate.getFullYear();
-    const endYear = endDate.getFullYear();
-    return startYear === endYear;
-  }, [startDate, endDate]);
-  
-  // Check if we're showing the current year
-  const isCurrentYear = useMemo(() => {
-    const currentYear = new Date().getFullYear();
-    return startDate.getFullYear() === currentYear;
-  }, [startDate]);
-  
-  // Determine the text to display for the date range
-  const dateRangeText = useMemo(() => {
-    if (isSingleYearView) {
-      return `${totalStudyMinutes} minutes in ${startDate.getFullYear()}`;
-    } else {
-      // If showing data from more than one year, specify the range
-      const fromYear = startDate.getFullYear();
-      const toYear = endDate.getFullYear();
-      return `${totalStudyMinutes} minutes from ${fromYear} to ${toYear}`;
-    }
-  }, [isSingleYearView, startDate, endDate, totalStudyMinutes]);
   
   return (
     <div className="w-full">
@@ -225,8 +207,8 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
           <CalendarHeatmap
             startDate={startDate}
             endDate={endDate}
-            values={allDatesInRange}
-            classForValue={(value: any) => {
+            values={allDatesInRange as CalendarHeatmapValue[]}
+            classForValue={(value) => {
               if (!value || value.count === undefined || value.count === 0) {
                 return 'color-empty'; 
               }
@@ -242,12 +224,10 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
                 return 'color-scale-4';
               }
             }}
-            tooltipDataAttrs={(value: any) => {
-              return {
-                'data-tooltip-id': 'heatmap-tooltip',
-                'data-tooltip-html': getTooltipContent(value)
-              } as any;
-            }}
+            tooltipDataAttrs={(value) => ({
+              'data-tooltip-id': 'heatmap-tooltip',
+              'data-tooltip-html': getTooltipContent(value)
+            })}
             showWeekdayLabels={true}
             weekdayLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
             monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}

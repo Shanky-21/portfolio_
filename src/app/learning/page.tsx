@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import Link from 'next/link';
 import LearningHeatmap, { StudySession } from '@/components/LearningHeatmap';
 import LearningTrend from '@/components/LearningTrend';
 import TopicFilter from '@/components/TopicFilter';
@@ -263,7 +262,7 @@ const LearningPage: React.FC = () => {
             <div className="bg-[#101935] p-5 rounded-lg border border-gray-800">
               <h3 className="font-semibold text-white mb-2">Consistency</h3>
               <p className="text-gray-400 text-sm">
-                You've logged {totalSessions} study sessions across {uniqueTopics} different topics
+                You&apos;ve logged {totalSessions} study sessions across {uniqueTopics} different topics
                 {selectedYear !== "All" ? ` in ${selectedYear}` : ''}.
                 Maintaining consistent study habits helps build skills effectively.
               </p>
