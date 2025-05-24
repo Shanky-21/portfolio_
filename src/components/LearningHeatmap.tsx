@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import CalendarHeatmap, { CalendarHeatmapValue } from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import { subDays, format, eachDayOfInterval, parseISO, isWithinInterval } from 'date-fns';
 import 'react-calendar-heatmap/dist/styles.css';
-import { FaRegCalendarAlt } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaDownload, FaInfoCircle } from 'react-icons/fa';
 
 // Types
 export interface StudySession {
@@ -20,6 +20,9 @@ interface LearningHeatmapProps {
 }
 
 const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }) => {
+  const [selectedDay, setSelectedDay] = useState<CalendarHeatmapValue | null>(null);
+  const [showLegendInfo, setShowLegendInfo] = useState(false);
+  
   // Determine the date range based on the data
   const { startDate, endDate } = useMemo(() => {
     // Get the year from the first entry (assumes data is already filtered by year if needed)
@@ -177,6 +180,38 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     return content;
   };
   
+  // Handle cell click to show details
+  const handleDayClick = (value: CalendarHeatmapValue) => {
+    // If clicking the same day, toggle selection off
+    if (selectedDay && selectedDay.date === value.date) {
+      setSelectedDay(null);
+    } else {
+      setSelectedDay(value);
+    }
+  };
+  
+  // Function to export the data as CSV
+  const exportData = () => {
+    // Create CSV content
+    const headers = ['Date', 'Topic', 'Minutes'];
+    const csvContent = [
+      headers.join(','),
+      ...filteredData.map(session => 
+        `${session.date},${session.topic.replace(/,/g, ';')},${session.minutes}`
+      )
+    ].join('\n');
+    
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `learning-data-${selectedTopic === "All" ? "all" : selectedTopic}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-3">
@@ -191,14 +226,72 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
           </p>
         </div>
         
-        <div className="flex items-center gap-1 text-xs">
-          <span className="text-gray-400">Less</span>
-          <div className="w-3 h-3 bg-[#161b22] rounded-sm"></div>
-          <div className="w-3 h-3 bg-[#0e4429] rounded-sm"></div>
-          <div className="w-3 h-3 bg-[#006d32] rounded-sm"></div>
-          <div className="w-3 h-3 bg-[#26a641] rounded-sm"></div>
-          <div className="w-3 h-3 bg-[#39d353] rounded-sm"></div>
-          <span className="text-gray-400">More</span>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={exportData}
+            className="text-xs flex items-center gap-1 px-2 py-1 bg-[#0B1935] hover:bg-[#132456] rounded border border-gray-700 text-gray-300 transition-colors"
+            title="Export data as CSV"
+          >
+            <FaDownload size={10} />
+            <span>Export</span>
+          </button>
+          
+          <div className="relative">
+            <div 
+              className="flex items-center gap-1 text-xs cursor-pointer"
+              onMouseEnter={() => setShowLegendInfo(true)}
+              onMouseLeave={() => setShowLegendInfo(false)}
+            >
+              <span className="text-gray-400">Less</span>
+              <div className="w-3 h-3 bg-[#161b22] rounded-sm"></div>
+              <div className="w-3 h-3 bg-[#0e4429] rounded-sm"></div>
+              <div className="w-3 h-3 bg-[#006d32] rounded-sm"></div>
+              <div className="w-3 h-3 bg-[#26a641] rounded-sm"></div>
+              <div className="w-3 h-3 bg-[#39d353] rounded-sm"></div>
+              <span className="text-gray-400">More</span>
+              <FaInfoCircle className="text-gray-500 ml-1" size={10} />
+            </div>
+            
+            {showLegendInfo && (
+              <div className="absolute right-0 top-6 bg-[#161b22] border border-gray-700 rounded-md p-2 z-10 shadow-lg text-xs w-48 animate-fadeIn">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-[#161b22] rounded-sm mr-2"></div>
+                    <span className="text-gray-300">No activity</span>
+                  </div>
+                  <span className="text-gray-500">0 min</span>
+                </div>
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-[#0e4429] rounded-sm mr-2"></div>
+                    <span className="text-gray-300">Light</span>
+                  </div>
+                  <span className="text-gray-500">1-30 min</span>
+                </div>
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-[#006d32] rounded-sm mr-2"></div>
+                    <span className="text-gray-300">Medium</span>
+                  </div>
+                  <span className="text-gray-500">31-60 min</span>
+                </div>
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-[#26a641] rounded-sm mr-2"></div>
+                    <span className="text-gray-300">Heavy</span>
+                  </div>
+                  <span className="text-gray-500">61-120 min</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-[#39d353] rounded-sm mr-2"></div>
+                    <span className="text-gray-300">Intense</span>
+                  </div>
+                  <span className="text-gray-500">120+ min</span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       
@@ -211,6 +304,11 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
             classForValue={(value) => {
               if (!value || value.count === undefined || value.count === 0) {
                 return 'color-empty'; 
+              }
+              
+              // Add selected class for the clicked day
+              if (selectedDay && value.date === selectedDay.date) {
+                return 'color-selected';
               }
               
               // GitHub style color mapping
@@ -228,6 +326,7 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
               'data-tooltip-id': 'heatmap-tooltip',
               'data-tooltip-html': getTooltipContent(value)
             })}
+            onClick={handleDayClick}
             showWeekdayLabels={true}
             weekdayLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
             monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
@@ -235,6 +334,51 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
           />
         </div>
       </div>
+      
+      {/* Show details panel for selected day */}
+      {selectedDay && selectedDay.count && selectedDay.count > 0 && (
+        <div className="mt-4 p-4 bg-[#101935] border border-gray-700 rounded-lg animate-fadeIn">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-md font-semibold text-white">
+              {format(new Date(selectedDay.date), 'EEEE, MMMM d, yyyy')}
+            </h3>
+            <button 
+              onClick={() => setSelectedDay(null)}
+              className="text-gray-400 hover:text-white"
+            >
+              <span className="sr-only">Close</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div className="flex items-center mb-3">
+            <div className="text-2xl font-bold text-[#00A3FF]">{selectedDay.count}</div>
+            <div className="ml-2 text-gray-300">minutes of learning</div>
+          </div>
+          
+          {selectedDay.topics && (
+            <div>
+              <h4 className="text-sm font-medium text-gray-300 mb-2">Topics studied:</h4>
+              <div className="space-y-2">
+                {Object.entries(selectedDay.topics as Record<string, number>)
+                  .sort(([,a], [,b]) => b - a)
+                  .map(([topic, minutes]) => (
+                    <div key={topic} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-[#00A3FF] rounded-full mr-2"></div>
+                        <span className="text-sm text-white">{topic}</span>
+                      </div>
+                      <span className="text-sm text-gray-400">{minutes} min</span>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       
       <Tooltip id="heatmap-tooltip" className="tooltip" style={{ 
         backgroundColor: '#161b22', 
@@ -308,12 +452,26 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
           fill: #39d353;
         }
         
+        /* Selected day styling */
+        .react-calendar-heatmap .color-selected {
+          fill: #00A3FF;
+          stroke: white;
+          stroke-width: 1px;
+        }
+        
         /* Cell shape and size */
         .react-calendar-heatmap rect {
           rx: 2;
           ry: 2;
           width: 10px;
           height: 10px;
+          cursor: pointer;
+          transition: stroke 0.2s ease;
+        }
+        
+        .react-calendar-heatmap rect:hover {
+          stroke: #8b949e;
+          stroke-width: 1px;
         }
         
         /* Adjust the overall width to be more compact */
@@ -324,6 +482,16 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
         /* Make sure month labels align correctly with their month cells */
         .react-calendar-heatmap-month-label {
           text-anchor: start;
+        }
+        
+        /* Animation for detail panel */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease forwards;
         }
       `}</style>
     </div>

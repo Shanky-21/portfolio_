@@ -70,6 +70,16 @@
     "minutes": 50
   },
   {
+    "date": "2025-05-24",
+    "topic": "CSS-Animation",
+    "minutes": 50
+  },
+  {
+    "date": "2025-05-25",
+    "topic": "CSS-Animation",
+    "minutes": 60
+  },
+  {
     "date": "2024-04-28",
     "topic": "JavaScript-Promises",
     "minutes": 65
