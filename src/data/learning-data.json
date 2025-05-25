@@ -1,0 +1,14 @@
+[
+  {
+    "date": "2025-05-24",
+    "topic": "DSA",
+    "minutes": 75,
+    "notes": "Recursion vs tailrecursion"
+  },
+  {
+    "date": "2025-05-24",
+    "topic": "System Design",
+    "minutes": 30,
+    "notes": "Dummy"
+  }
+]

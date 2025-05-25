@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 17, 36;
+  --background-end-rgb: 5, 10, 20;
+  --primary-color: #00A3FF;
+  --secondary-color: #001845;
+  --accent-color: #39d353;
 }
 
 @theme inline {
@@ -27,8 +31,13 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    )
+    fixed;
   font-family: 'Inter', 'Roboto', 'Open Sans', Arial, Helvetica, sans-serif;
   line-height: 1.6;
   margin: 0;
@@ -85,4 +94,96 @@ body {
     transform: rotate(45deg) translateX(200px);
     opacity: 0;
   }
+}
+
+/* Custom scrollbar for the entire site */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Common interactive elements */
+button, 
+a,
+.interactive-element {
+  transition: all 0.2s ease-in-out;
+}
+
+button:active,
+a:active,
+.interactive-element:active {
+  transform: scale(0.97);
+}
+
+/* Tooltip customization */
+.tooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Utility animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Page transitions */
+.page-transition-enter {
+  opacity: 0;
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
 }
