@@ -10,5 +10,11 @@
     "topic": "System Design",
     "minutes": 30,
     "notes": "Dummy"
+  },
+  {
+    "date": "2025-05-25",
+    "topic": "DSA",
+    "minutes": 50,
+    "notes": "Recursion isPalindrome + SumOfDigits"
   }
 ]
