@@ -190,16 +190,6 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     }
   };
   
-  // Prepare classes for color scaling
-  const colorClasses = {
-    'color-empty': 'color-empty',
-    'color-scale-1': 'color-scale-1',
-    'color-scale-2': 'color-scale-2',
-    'color-scale-3': 'color-scale-3',
-    'color-scale-4': 'color-scale-4',
-    'color-selected': 'color-selected'
-  };
-  
   return (
     <div className="w-full">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
