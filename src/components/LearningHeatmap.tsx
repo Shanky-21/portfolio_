@@ -5,7 +5,7 @@ import CalendarHeatmap, { CalendarHeatmapValue } from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import { subDays, format, eachDayOfInterval, parseISO, isWithinInterval } from 'date-fns';
 import 'react-calendar-heatmap/dist/styles.css';
-import { FaRegCalendarAlt, FaDownload, FaInfoCircle } from 'react-icons/fa';
+import { FaRegCalendarAlt, FaInfoCircle } from 'react-icons/fa';
 
 // Types
 export interface StudySession {
@@ -190,26 +190,14 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
     }
   };
   
-  // Function to export the data as CSV
-  const exportData = () => {
-    // Create CSV content
-    const headers = ['Date', 'Topic', 'Minutes'];
-    const csvContent = [
-      headers.join(','),
-      ...filteredData.map(session => 
-        `${session.date},${session.topic.replace(/,/g, ';')},${session.minutes}`
-      )
-    ].join('\n');
-    
-    // Create a blob and download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `learning-data-${selectedTopic === "All" ? "all" : selectedTopic}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Prepare classes for color scaling
+  const colorClasses = {
+    'color-empty': 'color-empty',
+    'color-scale-1': 'color-scale-1',
+    'color-scale-2': 'color-scale-2',
+    'color-scale-3': 'color-scale-3',
+    'color-scale-4': 'color-scale-4',
+    'color-selected': 'color-selected'
   };
   
   return (
@@ -227,15 +215,6 @@ const LearningHeatmap: React.FC<LearningHeatmapProps> = ({ data, selectedTopic }
         </div>
         
         <div className="flex items-center gap-3 mt-2 sm:mt-0">
-          {/* <button 
-            onClick={exportData}
-            className="text-xs flex items-center gap-1 px-2 py-1 bg-[#0B1935] hover:bg-[#132456] rounded border border-gray-700 text-gray-300 transition-colors"
-            title="Export data as CSV"
-          >
-            <FaDownload size={10} />
-            <span>Export</span>
-          </button> */}
-          
           <div className="relative">
             <div 
               className="flex flex-wrap items-center gap-1 text-xs cursor-pointer"
