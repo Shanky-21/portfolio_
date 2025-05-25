@@ -140,10 +140,19 @@ const Header = () => {
             <Link
               key={link.id}
               href={link.href}
-              className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+              className={`${linkBaseClasses} hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'} group`}
               onClick={closeMobileMenu}
             >
-              {link.label}
+              <span className="relative inline-block">
+                {link.label}
+                {link.id === "learning" && (
+                  <span className="absolute top-0 right-0 transform translate-x-full -translate-y-3/4 group-hover:scale-110 transition-transform duration-150">
+                    <span className="inline-block bg-rose-500 text-white text-xs font-semibold px-2 py-1 rounded-full leading-none animate-pulse">
+                      NEW
+                    </span>
+                  </span>
+                )}
+              </span>
             </Link>
           ))}
         </div>
@@ -181,10 +190,19 @@ const Header = () => {
               <Link
                 key={link.id}
                 href={link.href}
-                className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'}`}
+                className={`${linkBaseClasses} py-2 text-lg w-full text-center hover:text-[#00A3FF] cursor-pointer ${pathname === link.href ? 'text-[#00A3FF] font-semibold' : 'text-white'} group`}
                 onClick={closeMobileMenu}
               >
-                {link.label}
+                <span className="relative inline-block">
+                  {link.label}
+                  {link.id === "learning" && (
+                    <span className="absolute top-0 right-0 transform translate-x-full -translate-y-3/4 group-hover:scale-110 transition-transform duration-150">
+                      <span className="inline-block bg-rose-500 text-white text-xs font-semibold px-2 py-1 rounded-full leading-none animate-pulse">
+                        NEW
+                      </span>
+                    </span>
+                  )}
+                </span>
               </Link>
             ))}
           </div>

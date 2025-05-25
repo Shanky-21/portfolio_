@@ -70,7 +70,7 @@ const isValidDate = (dateString) => {
   
   // Check if date is in the future
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setUTCHours(0, 0, 0, 0);
   
   if (date > today) {
     console.error(`${colors.red}Error: Cannot add study sessions for future dates${colors.reset}`);
