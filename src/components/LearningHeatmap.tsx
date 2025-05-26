@@ -12,6 +12,9 @@ export interface StudySession {
   date: string;
   topic: string;
   minutes: number;
+  startTime?: string; // Optional to support existing data
+  endTime?: string;   // Optional to support existing data
+  notes?: string;
 }
 
 interface LearningHeatmapProps {
