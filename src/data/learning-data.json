@@ -16,5 +16,19 @@
     "topic": "DSA",
     "minutes": 50,
     "notes": "Recursion isPalindrome + SumOfDigits"
+  },
+  {
+    "date": "2025-05-26",
+    "topic": "DSA",
+    "minutes": 36,
+    "notes": "Recursion rope cut problem"
+  },
+  {
+    "date": "2025-05-26",
+    "topic": "DSA",
+    "minutes": 108,
+    "startTime": "20:22",
+    "endTime": "22:10",
+    "notes": "Recursion"
   }
 ]
