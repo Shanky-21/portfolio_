@@ -238,49 +238,99 @@ const addStudySession = () => {
         return;
       }
       
-      rl.question(`${colors.bright}Minutes spent${colors.reset}: `, (minutesInput) => {
-        const minutes = parseInt(minutesInput.trim(), 10);
-        
-        if (isNaN(minutes) || minutes <= 0) {
-          console.error(`${colors.red}Minutes must be a positive number!${colors.reset}`);
+      rl.question(`${colors.bright}Start time (HH:MM)${colors.reset}: `, (startTimeInput) => {
+        const startTime = startTimeInput.trim();
+        if (!startTime) {
+          console.error(`${colors.red}Start time is required!${colors.reset}`);
           rl.close();
           return;
         }
-        
-        rl.question(`${colors.bright}Notes${colors.reset} (optional): `, (notes) => {
-          // Create new session
-          const newSession = {
-            date,
-            topic,
-            minutes
-          };
-          
-          // Add notes if provided
-          if (notes.trim()) {
-            newSession.notes = notes.trim();
-          }
-          
-          // Add to data and save
-          currentData.push(newSession);
-          
-          if (writeData(currentData)) {
-            console.log(`\n${colors.green}${colors.bright}✅ Added: ${minutes} minutes studying ${topic} on ${date}${colors.reset}`);
-            
-            // Show total study time for this topic
-            const topicTotal = currentData
-              .filter(session => session.topic === topic)
-              .reduce((sum, session) => sum + session.minutes, 0);
-              
-            console.log(`${colors.green}Total time spent on ${topic}: ${topicTotal} minutes (${Math.floor(topicTotal/60)} hours, ${topicTotal % 60} minutes)${colors.reset}`);
-            
-            // Show updated daily total
-            const updatedDailyTotal = getTotalTimeForDate(currentData, date);
-            console.log(`${colors.green}Total time spent on ${date}: ${updatedDailyTotal} minutes${colors.reset}`);
-          } else {
-            console.error(`\n${colors.red}❌ Failed to save the study session.${colors.reset}`);
-          }
-          
+        if (!/^\d{2}:\d{2}$/.test(startTime)) {
+          console.error(`${colors.red}Invalid start time format. Please use HH:MM.${colors.reset}`);
           rl.close();
+          return;
+        }
+
+        rl.question(`${colors.bright}End time (HH:MM)${colors.reset}: `, (endTimeInput) => {
+          const endTime = endTimeInput.trim();
+          if (!endTime) {
+            console.error(`${colors.red}End time is required!${colors.reset}`);
+            rl.close();
+            return;
+          }
+          if (!/^\d{2}:\d{2}$/.test(endTime)) {
+            console.error(`${colors.red}Invalid end time format. Please use HH:MM.${colors.reset}`);
+            rl.close();
+            return;
+          }
+
+          // Calculate minutes from startTime and endTime
+          const startDateObj = new Date(`${date}T${startTime}:00`);
+          const endDateObj = new Date(`${date}T${endTime}:00`);
+
+          if (isNaN(startDateObj.getTime()) || isNaN(endDateObj.getTime())) {
+            console.error(`${colors.red}Invalid date/time values for calculation.${colors.reset}`);
+            rl.close();
+            return;
+          }
+
+          let minutes = (endDateObj.getTime() - startDateObj.getTime()) / (1000 * 60);
+
+          // Handle cases where end time is on the next day (e.g. session crosses midnight)
+          // For now, we assume if endTime is earlier than startTime, it's on the next day.
+          // A more robust solution might involve asking for endDate if session spans multiple days.
+          if (minutes < 0) {
+            // Assuming it crossed midnight, add 24 hours worth of minutes
+            // This is a simplification. For sessions > 24h or more complex scenarios,
+            // explicit end date input would be better.
+            const nextDayEndDateObj = new Date(endDateObj);
+            nextDayEndDateObj.setDate(endDateObj.getDate() + 1);
+            minutes = (nextDayEndDateObj.getTime() - startDateObj.getTime()) / (1000*60);
+          }
+          
+          if (minutes <= 0) {
+            console.error(`${colors.red}End time must be after start time, resulting in positive duration.${colors.reset}`);
+            rl.close();
+            return;
+          }
+
+          rl.question(`${colors.bright}Notes${colors.reset} (optional): `, (notes) => {
+            // Create new session
+            const newSession = {
+              date,
+              topic,
+              minutes: Math.round(minutes), // Store calculated minutes
+              startTime,
+              endTime,
+            };
+
+            // Add notes if provided
+            if (notes.trim()) {
+              newSession.notes = notes.trim();
+            }
+            
+            // Add to data and save
+            currentData.push(newSession);
+            
+            if (writeData(currentData)) {
+              console.log(`\n${colors.green}${colors.bright}✅ Added: ${minutes} minutes studying ${topic} on ${date}${colors.reset}`);
+              
+              // Show total study time for this topic
+              const topicTotal = currentData
+                .filter(session => session.topic === topic)
+                .reduce((sum, session) => sum + session.minutes, 0);
+                
+              console.log(`${colors.green}Total time spent on ${topic}: ${topicTotal} minutes (${Math.floor(topicTotal/60)} hours, ${topicTotal % 60} minutes)${colors.reset}`);
+              
+              // Show updated daily total
+              const updatedDailyTotal = getTotalTimeForDate(currentData, date);
+              console.log(`${colors.green}Total time spent on ${date}: ${updatedDailyTotal} minutes${colors.reset}`);
+            } else {
+              console.error(`\n${colors.red}❌ Failed to save the study session.${colors.reset}`);
+            }
+            
+            rl.close();
+          });
         });
       });
     });
