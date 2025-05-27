@@ -342,7 +342,7 @@ const LearningPage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors ${
+                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors cursor-pointer ${
                   activeTab === tab.id
                     ? 'text-[#00A3FF] border-b-2 border-[#00A3FF] bg-[#101935]'
                     : 'text-gray-400 hover:text-white hover:bg-[#101935]'
