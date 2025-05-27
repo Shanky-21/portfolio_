@@ -30,5 +30,21 @@
     "startTime": "20:22",
     "endTime": "22:10",
     "notes": "Recursion"
+  },
+  {
+    "date": "2025-05-27",
+    "topic": "DSA",
+    "minutes": 42,
+    "startTime": "20:36",
+    "endTime": "21:18",
+    "notes": "Array"
+  },
+  {
+    "date": "2025-05-27",
+    "topic": "DSA",
+    "minutes": 35,
+    "startTime": "22:17",
+    "endTime": "22:52",
+    "notes": "Array"
   }
 ]
