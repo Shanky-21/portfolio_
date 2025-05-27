@@ -55,7 +55,10 @@ const writeData = (data) => {
 // Get today's date in YYYY-MM-DD format
 const getTodayDate = () => {
   const today = new Date();
-  return today.toISOString().split('T')[0];
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 // Function to validate date format (YYYY-MM-DD) and check if it's a valid date
@@ -68,11 +71,10 @@ const isValidDate = (dateString) => {
   
   if (!isValid) return false;
   
-  // Check if date is in the future
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  // Check if date is in the future - compare date strings instead of Date objects
+  const todayString = getTodayDate();
   
-  if (date > today) {
+  if (dateString > todayString) {
     console.error(`${colors.red}Error: Cannot add study sessions for future dates${colors.reset}`);
     return false;
   }
