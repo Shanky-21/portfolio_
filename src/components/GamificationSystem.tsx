@@ -316,20 +316,6 @@ const GamificationSystem: React.FC<GamificationSystemProps> = ({ data }) => {
     };
   }, [data]);
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      gray: { bg: 'bg-gray-500', text: 'text-gray-400', border: 'border-gray-500' },
-      blue: { bg: 'bg-blue-500', text: 'text-blue-400', border: 'border-blue-500' },
-      green: { bg: 'bg-green-500', text: 'text-green-400', border: 'border-green-500' },
-      purple: { bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-500' },
-      orange: { bg: 'bg-orange-500', text: 'text-orange-400', border: 'border-orange-500' },
-      red: { bg: 'bg-red-500', text: 'text-red-400', border: 'border-red-500' },
-      yellow: { bg: 'bg-yellow-500', text: 'text-yellow-400', border: 'border-yellow-500' },
-      rainbow: { bg: 'bg-gradient-to-r from-purple-500 to-pink-500', text: 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400', border: 'border-purple-500' }
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
   const categoryIcons = {
     consistency: <FaFire className="text-orange-400" />,
     milestone: <FaTrophy className="text-yellow-400" />,

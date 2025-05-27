@@ -20,7 +20,7 @@ interface HourlyData {
 const ProductiveTimeAnalysis: React.FC<ProductiveTimeAnalysisProps> = ({ data, selectedTopic }) => {
   // Filter data by topic and only include sessions with time data
   const filteredData = useMemo(() => {
-    let filtered = selectedTopic === "All" ? data : data.filter(session => session.topic === selectedTopic);
+    const filtered = selectedTopic === "All" ? data : data.filter(session => session.topic === selectedTopic);
     return filtered.filter(session => session.startTime && session.endTime);
   }, [data, selectedTopic]);
 
@@ -42,7 +42,7 @@ const ProductiveTimeAnalysis: React.FC<ProductiveTimeAnalysisProps> = ({ data, s
       const endMinute = parseInt(session.endTime.split(':')[1]);
       
       // Calculate session duration
-      let sessionDuration = session.minutes;
+      const sessionDuration = session.minutes;
       
       // For sessions spanning multiple hours, distribute the time
       if (startHour === endHour) {

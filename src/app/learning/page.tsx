@@ -11,14 +11,8 @@ import GamificationSystem from '@/components/GamificationSystem';
 import learningData from '@/data/learning-data.json';
 import { 
   FaChartLine, FaCalendarAlt, FaClock, FaLayerGroup, FaAward, FaExternalLinkAlt, 
-  FaTimes, FaTrophy, FaUserGraduate, FaMedal, FaStar, FaCalendarCheck, FaChartBar, 
-  FaCrown, FaFireAlt, FaBullseye, FaRocket, FaGraduationCap, FaGamepad 
+  FaTimes, FaTrophy, FaFireAlt, FaBullseye, FaCrown
 } from 'react-icons/fa';
-
-// Define daily/weekly/monthly goals
-const DAILY_GOAL = 300; // minutes (5 hours per day)
-const WEEKLY_GOAL = 2100; // minutes (35 hours per week)
-const MONTHLY_GOAL = 9000; // minutes (150 hours per month)
 
 // Tab definitions
 const TABS = [

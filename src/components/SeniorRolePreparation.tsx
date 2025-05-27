@@ -208,7 +208,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-white flex items-center">
                 <FaBullseye className="mr-2 text-orange-400" />
-                Today's Progress
+                Today&apos;s Progress
               </h3>
               <div className="text-right">
                 <div className="text-lg font-bold text-white">
@@ -381,7 +381,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
         </h3>
         
         <div className="space-y-4">
-          {recentProgress.map((day, index) => (
+          {recentProgress.map((day) => (
             <div key={day.date} className={`p-4 rounded-lg border ${
               day.isToday ? 'bg-[#1A2A50] border-[#00A3FF]' : 'bg-[#101935] border-gray-800'
             }`}>
