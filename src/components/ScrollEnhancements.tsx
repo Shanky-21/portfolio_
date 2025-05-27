@@ -67,7 +67,7 @@ const ScrollEnhancements = () => {
             <div className="text-xs text-gray-400">Years Experience</div>
           </div>
           <div className="mt-2 text-center">
-            <div className="text-lg font-bold text-[#00FFF0]">10+</div>
+            <div className="text-lg font-bold text-[#00FFF0]">4+</div>
             <div className="text-xs text-gray-400">Projects Built</div>
           </div>
         </div>
