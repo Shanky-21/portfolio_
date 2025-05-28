@@ -8,6 +8,7 @@ import YearFilter from '@/components/YearFilter';
 import ProductiveTimeAnalysis from '@/components/ProductiveTimeAnalysis';
 import SeniorRolePreparation from '@/components/SeniorRolePreparation';
 import GamificationSystem from '@/components/GamificationSystem';
+import DailyInspiration from '@/components/DailyInspiration';
 import learningData from '@/data/learning-data.json';
 import { 
   FaChartLine, FaCalendarAlt, FaClock, FaLayerGroup, FaAward, FaExternalLinkAlt, 
@@ -334,6 +335,9 @@ const LearningPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Daily Inspiration */}
+        <DailyInspiration />
 
         {/* Tab Navigation */}
         <div className="bg-[#0A1124] rounded-lg shadow-xl border border-gray-800 mb-8">
