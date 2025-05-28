@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { 
   Chart as ChartJS, 
@@ -19,6 +19,7 @@ import {
 import { subDays, format, parseISO } from 'date-fns';
 import { StudySession } from './LearningHeatmap';
 import { FaChartLine, FaInfoCircle, FaFireAlt, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
+import { TOTAL_DAILY_GOAL_MINUTES, SENIOR_ROLE_SUBJECTS } from '@/constants/learningGoals';
 
 // Register Chart.js components
 ChartJS.register(
@@ -37,12 +38,11 @@ interface LearningTrendProps {
   selectedTopic: string;
 }
 
-// Daily study goal in minutes
-const DAILY_GOAL = 300; // 5 hours in minutes
-
 const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) => {
   // State for selected point on the chart
   const [selectedPoint, setSelectedPoint] = useState<number | null>(null);
+  // State for collapsible Weekly Insights
+  const [isInsightsExpanded, setIsInsightsExpanded] = useState(false);
   
   // Get current date or most recent date in data
   const getMostRecentDate = useMemo(() => {
@@ -92,21 +92,125 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
     }));
   }, [data, selectedTopic, referenceDate]);
   
-  // Calculate trend direction
-  const trendDirection = useMemo(() => {
-    // Need at least 2 data points with activity to determine trend
+  // Calculate trend direction with more sophisticated analysis
+  const trendAnalysis = useMemo(() => {
+    // Need at least 3 data points for meaningful trend analysis
     const daysWithActivity = recentData.filter(day => day.minutes > 0);
-    if (daysWithActivity.length < 2) return "neutral";
+    if (daysWithActivity.length < 2) {
+      return { 
+        type: "insufficient", 
+        message: "Building momentum", 
+        description: "Start logging sessions to see trends",
+        color: "text-gray-400"
+      };
+    }
+
+    // Calculate various trend metrics
+    const totalMinutes = recentData.reduce((sum, day) => sum + day.minutes, 0);
+    const avgDaily = totalMinutes / 7;
+    const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
     
-    // Check if most recent day has activity
-    const lastDay = recentData[recentData.length - 1];
-    const secondLastDay = recentData[recentData.length - 2];
+    // Get recent 3 days vs previous 4 days for comparison
+    const recent3Days = recentData.slice(-3);
+    const previous4Days = recentData.slice(0, 4);
     
-    // Simple trend based on last two days with activity
-    if (lastDay.minutes > secondLastDay.minutes) return "up";
-    if (lastDay.minutes < secondLastDay.minutes) return "down";
-    return "neutral";
-  }, [recentData]);
+    const recent3DaysAvg = recent3Days.reduce((sum, day) => sum + day.minutes, 0) / 3;
+    const previous4DaysAvg = previous4Days.reduce((sum, day) => sum + day.minutes, 0) / 4;
+    
+    // Check consistency (how many days met goal)
+    const daysMetGoal = recentData.filter(day => day.minutes >= goalMinutes).length;
+    const consistencyRate = daysMetGoal / 7;
+    
+    // Check if there's been activity in last 2 days
+    const lastTwoDays = recentData.slice(-2);
+    const hasRecentActivity = lastTwoDays.some(day => day.minutes > 0);
+    
+    // Calculate weekly goal progress
+    const weeklyGoal = goalMinutes * 7;
+    const weeklyProgress = totalMinutes / weeklyGoal;
+    
+    // Check recent trend direction
+    const isIncreasing = recent3DaysAvg > previous4DaysAvg * 1.2;
+    const isDecreasing = recent3DaysAvg < previous4DaysAvg * 0.7;
+    
+    // Determine trend type and message with better context
+    if (!hasRecentActivity) {
+      return {
+        type: "inactive",
+        message: "Need to restart",
+        description: "No activity in last 2 days",
+        color: "text-[#f85149]"
+      };
+    }
+    
+    // Excellent performance: high consistency AND meeting weekly goals
+    if (consistencyRate >= 0.8 && weeklyProgress >= 0.8) {
+      return {
+        type: "excellent",
+        message: "Excellent consistency",
+        description: `${daysMetGoal}/7 days met goal`,
+        color: "text-[#39d353]"
+      };
+    }
+    
+    // Good performance with strong momentum: decent progress AND increasing trend
+    if (weeklyProgress >= 0.6 && isIncreasing && recent3DaysAvg >= goalMinutes * 0.8) {
+      return {
+        type: "accelerating",
+        message: "Strong momentum",
+        description: "Recent days show increased focus",
+        color: "text-[#39d353]"
+      };
+    }
+    
+    // Concerning decline: decreasing trend OR very low recent activity
+    if (isDecreasing || recent3DaysAvg < goalMinutes * 0.3) {
+      return {
+        type: "declining",
+        message: "Momentum slowing",
+        description: "Consider adjusting schedule",
+        color: "text-[#f85149]"
+      };
+    }
+    
+    // Moderate improvement: increasing but still below optimal
+    if (isIncreasing && weeklyProgress >= 0.3) {
+      return {
+        type: "improving",
+        message: "Building momentum",
+        description: "Recent improvement noted",
+        color: "text-[#ffa657]"
+      };
+    }
+    
+    // Steady good performance: meeting most goals consistently
+    if (avgDaily >= goalMinutes * 0.8) {
+      return {
+        type: "steady_good",
+        message: "Steady progress",
+        description: "Maintaining good pace",
+        color: "text-[#00FFF0]"
+      };
+    }
+    
+    // Moderate activity: some progress but room for improvement
+    if (avgDaily >= goalMinutes * 0.5 || weeklyProgress >= 0.4) {
+      return {
+        type: "steady_moderate",
+        message: "Building habits",
+        description: "Room for improvement",
+        color: "text-[#ffa657]"
+      };
+    }
+    
+    // Low activity: needs significant improvement
+    return {
+      type: "low_activity",
+      message: "Needs attention",
+      description: "Below target pace",
+      color: "text-[#f85149]"
+    };
+  }, [recentData, selectedTopic]);
   
   // Calculate streak information
   const streak = useMemo(() => {
@@ -136,7 +240,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
       const date = new Date(dateStr);
       
       // Check if date meets goal
-      if (minutes >= DAILY_GOAL) {
+      if (minutes >= TOTAL_DAILY_GOAL_MINUTES) {
         goalsMet++;
       }
       
@@ -192,7 +296,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
   // Calculate weekly goal progress
   const weeklyGoalProgress = useMemo(() => {
     const daysInWeek = 7;
-    const weeklyGoal = DAILY_GOAL * daysInWeek;
+    const weeklyGoal = TOTAL_DAILY_GOAL_MINUTES * daysInWeek;
     const totalMinutes = recentData.reduce((sum, day) => sum + day.minutes, 0);
     const percentage = Math.min(100, Math.round((totalMinutes / weeklyGoal) * 100));
     
@@ -203,23 +307,97 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
     };
   }, [recentData]);
   
+  // Enhanced weekly insights
+  const weeklyInsights = useMemo(() => {
+    const insights = [];
+    const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
+    const totalMinutes = recentData.reduce((sum, day) => sum + day.minutes, 0);
+    const activeDays = recentData.filter(day => day.minutes > 0).length;
+    const daysMetGoal = recentData.filter(day => day.minutes >= goalMinutes).length;
+    
+    // Consistency insight
+    if (daysMetGoal >= 5) {
+      insights.push({
+        icon: "🎯",
+        text: "Excellent goal achievement rate",
+        type: "positive"
+      });
+    } else if (daysMetGoal >= 3) {
+      insights.push({
+        icon: "📈",
+        text: "Good progress, aim for more consistency",
+        type: "neutral"
+      });
+    } else if (activeDays >= 4) {
+      insights.push({
+        icon: "⚡",
+        text: "Active but need longer sessions",
+        type: "neutral"
+      });
+    } else {
+      insights.push({
+        icon: "🔄",
+        text: "Focus on building daily habits",
+        type: "improvement"
+      });
+    }
+    
+    // Weekend vs weekday pattern
+    const weekendDays = [recentData[0], recentData[6]]; // Assuming Sunday and Saturday
+    const weekdayDays = recentData.slice(1, 6);
+    const weekendAvg = weekendDays.reduce((sum, day) => sum + day.minutes, 0) / 2;
+    const weekdayAvg = weekdayDays.reduce((sum, day) => sum + day.minutes, 0) / 5;
+    
+    if (weekendAvg > weekdayAvg * 1.5) {
+      insights.push({
+        icon: "📅",
+        text: "Strong weekend learner",
+        type: "positive"
+      });
+    } else if (weekdayAvg > weekendAvg * 1.5) {
+      insights.push({
+        icon: "💼",
+        text: "Consistent weekday routine",
+        type: "positive"
+      });
+    }
+    
+    // Best day insight
+    const bestDay = recentData.reduce((max, day) => day.minutes > max.minutes ? day : max, recentData[0]);
+    if (bestDay.minutes > 0) {
+      insights.push({
+        icon: "⭐",
+        text: `Best day: ${bestDay.formattedDate.split(',')[0]} (${bestDay.minutes >= 60 ? `${Math.floor(bestDay.minutes / 60)}h ${bestDay.minutes % 60}m` : `${bestDay.minutes}m`})`,
+        type: "highlight"
+      });
+    }
+    
+    return insights.slice(0, 3); // Limit to 3 insights
+  }, [recentData, selectedTopic]);
+  
   // Chart data and options
   const chartData: ChartData<'line', number[], string> = {
     labels: recentData.map(day => day.formattedDate),
     datasets: [
       {
-        label: selectedTopic === "All" ? 'All Topics' : selectedTopic,
+        label: selectedTopic === "All" ? 'Actual Study Time' : `${selectedTopic} Study Time`,
         data: recentData.map(day => day.minutes),
         borderColor: '#00A3FF',
         backgroundColor: 'rgba(0, 163, 255, 0.1)',
         tension: 0.3,
         fill: true,
         pointBackgroundColor: (context) => {
-          // Highlight selected point
-          return selectedPoint === context.dataIndex ? '#ffffff' : '#00A3FF';
+          const minutes = context.parsed.y;
+          const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
+          // Highlight selected point or color based on goal achievement
+          if (selectedPoint === context.dataIndex) return '#ffffff';
+          return minutes >= goalMinutes ? '#39d353' : '#00A3FF';
         },
         pointBorderColor: (context) => {
-          return selectedPoint === context.dataIndex ? '#00A3FF' : '#00A3FF';
+          const minutes = context.parsed.y;
+          const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
+          if (selectedPoint === context.dataIndex) return '#00A3FF';
+          return minutes >= goalMinutes ? '#39d353' : '#00A3FF';
         },
         pointBorderWidth: (context) => {
           return selectedPoint === context.dataIndex ? 2 : 1;
@@ -231,6 +409,18 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
         pointHoverBackgroundColor: '#ffffff',
         pointHoverBorderColor: '#00A3FF',
         pointHoverBorderWidth: 2,
+      },
+      {
+        label: 'Daily Goal',
+        data: recentData.map(() => selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES),
+        borderColor: '#f85149',
+        backgroundColor: 'rgba(248, 81, 73, 0.05)',
+        borderDash: [5, 5],
+        tension: 0,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 2,
       },
     ],
   };
@@ -267,7 +457,16 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'top' as const,
+        labels: {
+          color: '#7d8590',
+          usePointStyle: true,
+          padding: 20,
+          font: {
+            size: 12
+          }
+        }
       },
       tooltip: {
         backgroundColor: '#161b22',
@@ -276,23 +475,63 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
         borderColor: '#30363d',
         borderWidth: 1,
         padding: 10,
-        displayColors: false,
+        displayColors: true,
         callbacks: {
           title: function(tooltipItems: TooltipItem<'line'>[]) {
             return tooltipItems[0].label;
           },
           label: function(context: TooltipItem<'line'>) {
-            const minutes = context.parsed.y;
-            if (minutes < 60) {
-              return `${minutes} minutes studied`;
+            if (context.datasetIndex === 1) {
+              // Goal line
+              const goalMinutes = context.parsed.y;
+              const goalHours = Math.floor(goalMinutes / 60);
+              const goalRemainingMinutes = goalMinutes % 60;
+              return `Goal: ${goalHours > 0 ? `${goalHours}h ` : ''}${goalRemainingMinutes}m`;
             } else {
-              const hours = Math.floor(minutes / 60);
-              const remainingMinutes = minutes % 60;
-              if (remainingMinutes === 0) {
-                return `${hours} hour${hours !== 1 ? 's' : ''} studied`;
+              // Actual study time
+              const minutes = context.parsed.y;
+              const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
+              
+              let timeText = '';
+              if (minutes < 60) {
+                timeText = `${minutes} minutes`;
+              } else {
+                const hours = Math.floor(minutes / 60);
+                const remainingMinutes = minutes % 60;
+                if (remainingMinutes === 0) {
+                  timeText = `${hours} hour${hours !== 1 ? 's' : ''}`;
+                } else {
+                  timeText = `${hours}h ${remainingMinutes}m`;
+                }
               }
-              return `${hours} hour${hours !== 1 ? 's' : ''} ${remainingMinutes} min studied`;
+              
+              const percentage = Math.round((minutes / goalMinutes) * 100);
+              return `Studied: ${timeText} (${percentage}% of goal)`;
             }
+          },
+          afterBody: function(tooltipItems: TooltipItem<'line'>[]) {
+            const actualItem = tooltipItems.find(item => item.datasetIndex === 0);
+            if (actualItem) {
+              const minutes = actualItem.parsed.y;
+              const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
+              
+              if (minutes >= goalMinutes) {
+                const excess = minutes - goalMinutes;
+                if (excess > 0) {
+                  const excessHours = Math.floor(excess / 60);
+                  const excessMins = excess % 60;
+                  return `✅ Goal exceeded by ${excessHours > 0 ? `${excessHours}h ` : ''}${excessMins}m`;
+                } else {
+                  return '✅ Daily goal achieved!';
+                }
+              } else {
+                const needed = goalMinutes - minutes;
+                const neededHours = Math.floor(needed / 60);
+                const neededMins = needed % 60;
+                return `⚠️ Need ${neededHours > 0 ? `${neededHours}h ` : ''}${neededMins}m more`;
+              }
+            }
+            return '';
           }
         }
       }
@@ -366,13 +605,16 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
             </span>
           </div>
           
-          {trendDirection !== "neutral" && (
-            <div className={`text-sm px-3 py-1 rounded-md flex items-center ${
-              trendDirection === "up" 
-                ? "bg-[#0e4429] text-[#39d353]" 
-                : "bg-[#350c0c] text-[#f85149]"
+          {trendAnalysis.type !== "insufficient" && (
+            <div className={`text-sm px-3 py-1 rounded-md border ${
+              trendAnalysis.type === "excellent" || trendAnalysis.type === "accelerating" || trendAnalysis.type === "steady_good"
+                ? "bg-[#0e4429] border-[#39d353] text-[#39d353]"
+                : trendAnalysis.type === "inactive" || trendAnalysis.type === "declining" || trendAnalysis.type === "low_activity"
+                ? "bg-[#350c0c] border-[#f85149] text-[#f85149]"
+                : "bg-[#1f2937] border-[#ffa657] text-[#ffa657]"
             }`}>
-              {trendDirection === "up" ? "↗ Trending Up" : "↘ Trending Down"}
+              <div className="font-medium">{trendAnalysis.message}</div>
+              <div className="text-xs opacity-80">{trendAnalysis.description}</div>
             </div>
           )}
         </div>
@@ -401,7 +643,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
                 </span>
                 <span className="ml-1 text-gray-400 text-sm">of learning</span>
                 
-                {selectedDayInfo.minutes >= DAILY_GOAL ? (
+                {selectedDayInfo.minutes >= TOTAL_DAILY_GOAL_MINUTES ? (
                   <div className="ml-auto text-[#39d353] flex items-center text-xs">
                     <FaCheck className="mr-1" />
                     Daily goal met
@@ -409,7 +651,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
                 ) : (
                   <div className="ml-auto text-[#f85149] flex items-center text-xs">
                     <FaExclamationTriangle className="mr-1" />
-                    {DAILY_GOAL - selectedDayInfo.minutes}min to goal
+                    {TOTAL_DAILY_GOAL_MINUTES - selectedDayInfo.minutes}min to goal
                   </div>
                 )}
               </div>
@@ -480,7 +722,7 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
               <div className="ml-1 text-gray-500 cursor-help group relative">
                 <FaInfoCircle size={12} />
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-[#161b22] text-xs text-gray-300 rounded border border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                  Progress toward {DAILY_GOAL} minutes per day (weekly total).
+                  Progress toward {TOTAL_DAILY_GOAL_MINUTES} minutes per day (weekly total).
                 </div>
               </div>
             </div>
@@ -501,6 +743,139 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
                     : `${weeklyGoalProgress.minutesNeeded}min needed`}
                 </span>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Weekly Insights Section */}
+      {hasActivity && weeklyInsights.length > 0 && (
+        <div className="mt-6 bg-gradient-to-br from-[#101935] to-[#0A1124] p-6 rounded-xl border border-gray-700 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#00A3FF] to-[#00FFF0] opacity-5 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#00FFF0] to-[#00A3FF] opacity-3 rounded-full blur-3xl"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-white flex items-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-[#00A3FF] to-[#00FFF0] rounded-lg flex items-center justify-center mr-3">
+                  <span className="text-sm">💡</span>
+                </div>
+                Weekly Insights
+              </h3>
+              <div className="flex items-center space-x-3">
+                <div className="text-xs text-gray-400 bg-[#0A1124] px-3 py-1 rounded-full border border-gray-700">
+                  {weeklyInsights.length} insight{weeklyInsights.length !== 1 ? 's' : ''}
+                </div>
+                <button
+                  onClick={() => setIsInsightsExpanded(!isInsightsExpanded)}
+                  className="p-2 rounded-lg bg-[#0A1124] border border-gray-700 text-gray-400 hover:text-[#00A3FF] hover:border-[#00A3FF] transition-all duration-300 group"
+                  title={isInsightsExpanded ? "Collapse insights" : "Expand insights"}
+                >
+                  <svg 
+                    className={`w-4 h-4 transition-transform duration-300 ${isInsightsExpanded ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div className={`transition-all duration-500 ease-in-out ${
+              isInsightsExpanded 
+                ? 'max-h-[1000px] opacity-100' 
+                : 'max-h-0 opacity-0 overflow-hidden'
+            }`}>
+              <div className="grid grid-cols-1 gap-4">
+                {weeklyInsights.map((insight, index) => {
+                  const getInsightStyle = (type: string) => {
+                    switch (type) {
+                      case "positive":
+                        return {
+                          bg: "bg-gradient-to-r from-[#0e4429] to-[#0a3d1f]",
+                          border: "border-[#39d353]",
+                          text: "text-[#39d353]",
+                          icon: "bg-[#39d353]",
+                          glow: "shadow-[0_0_20px_rgba(57,211,83,0.1)]"
+                        };
+                      case "improvement":
+                        return {
+                          bg: "bg-gradient-to-r from-[#350c0c] to-[#2d0a0a]",
+                          border: "border-[#f85149]",
+                          text: "text-[#f85149]",
+                          icon: "bg-[#f85149]",
+                          glow: "shadow-[0_0_20px_rgba(248,81,73,0.1)]"
+                        };
+                      case "highlight":
+                        return {
+                          bg: "bg-gradient-to-r from-[#1f2937] to-[#1a202c]",
+                          border: "border-[#00A3FF]",
+                          text: "text-[#00A3FF]",
+                          icon: "bg-[#00A3FF]",
+                          glow: "shadow-[0_0_20px_rgba(0,163,255,0.1)]"
+                        };
+                      default:
+                        return {
+                          bg: "bg-gradient-to-r from-[#1f2937] to-[#1a202c]",
+                          border: "border-gray-600",
+                          text: "text-gray-300",
+                          icon: "bg-gray-600",
+                          glow: "shadow-[0_0_10px_rgba(107,114,128,0.1)]"
+                        };
+                    }
+                  };
+                  
+                  const style = getInsightStyle(insight.type);
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className={`${style.bg} ${style.glow} p-4 rounded-lg border ${style.border} border-opacity-30 hover:border-opacity-50 transition-all duration-300 hover:transform hover:scale-[1.02] group`}
+                    >
+                      <div className="flex items-start space-x-4">
+                        <div className={`w-10 h-10 ${style.icon} bg-opacity-20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                          <span className="text-lg">{insight.icon}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`${style.text} font-medium leading-relaxed`}>
+                            {insight.text}
+                          </p>
+                          {insight.type === "positive" && (
+                            <div className="mt-2 text-xs text-green-400 opacity-75">
+                              Keep up the excellent work! 🚀
+                            </div>
+                          )}
+                          {insight.type === "improvement" && (
+                            <div className="mt-2 text-xs text-red-400 opacity-75">
+                              Small changes can make a big difference 💪
+                            </div>
+                          )}
+                          {insight.type === "highlight" && (
+                            <div className="mt-2 text-xs text-blue-400 opacity-75">
+                              Celebrating your achievements! 🎉
+                            </div>
+                          )}
+                        </div>
+                        <div className={`w-2 h-2 ${style.icon} rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Summary footer */}
+              <div className="mt-6 pt-4 border-t border-gray-700 border-opacity-50">
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  <span>Based on your last 7 days of activity</span>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-[#00A3FF] rounded-full animate-pulse"></div>
+                    <span>Live insights</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

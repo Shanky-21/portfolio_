@@ -3,6 +3,12 @@
 import React, { useMemo, useState } from 'react';
 import { StudySession } from './LearningHeatmap';
 import { FaCode, FaArchway, FaLayerGroup, FaCog, FaTrophy, FaFireAlt, FaBullseye, FaCrown, FaRocket, FaGraduationCap, FaChartBar, FaChevronDown, FaChevronUp, FaArrowUp, FaArrowDown, FaCalendarAlt, FaClock, FaAward, FaInfoCircle } from 'react-icons/fa';
+import { 
+  SENIOR_ROLE_SUBJECTS, 
+  TOTAL_DAILY_GOAL_MINUTES, 
+  MONTHLY_GOAL_MINUTES,
+  getSubjectColorClasses 
+} from '@/constants/learningGoals';
 
 interface SeniorRolePreparationProps {
   data: StudySession[];
@@ -42,44 +48,6 @@ interface DetailedAnalyticsProps {
   overallStats: OverallStats;
   weeklyGoals: Record<string, WeeklyGoal>;
 }
-
-// Define the senior role preparation subjects and their daily goals
-const SENIOR_ROLE_SUBJECTS = {
-  'DSA': { 
-    goal: 180, // 3 hours
-    icon: <FaCode className="text-green-400" />,
-    color: 'green',
-    description: 'Data Structures & Algorithms',
-    masteryHours: 200, // Industry benchmark for senior level
-    masteryDescription: '200+ hours of focused DSA practice'
-  },
-  'System Design': { 
-    goal: 60, // 1 hour
-    icon: <FaArchway className="text-blue-400" />,
-    color: 'blue',
-    description: 'System Design & Architecture',
-    masteryHours: 100, // Complex systems understanding
-    masteryDescription: '100+ hours of system design study'
-  },
-  'Scala': { 
-    goal: 60, // 1 hour
-    icon: <FaLayerGroup className="text-red-400" />,
-    color: 'red',
-    description: 'Scala Programming Language',
-    masteryHours: 150, // Functional programming mastery
-    masteryDescription: '150+ hours of Scala proficiency'
-  },
-  'Akka': { 
-    goal: 60, // 1 hour
-    icon: <FaCog className="text-purple-400" />,
-    color: 'purple',
-    description: 'Akka Framework',
-    masteryHours: 80, // Framework specific knowledge
-    masteryDescription: '80+ hours of Akka expertise'
-  }
-};
-
-const TOTAL_DAILY_GOAL = Object.values(SENIOR_ROLE_SUBJECTS).reduce((sum, subject) => sum + subject.goal, 0); // 6 hours total
 
 // Tooltip Component
 const Tooltip: React.FC<{ text: string; children: React.ReactNode }> = ({ text, children }) => {
@@ -206,16 +174,6 @@ const DetailedAnalytics: React.FC<DetailedAnalyticsProps> = ({
     };
   }, [data, monthlyProgress, overallStats, weeklyGoals]);
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      green: { bg: 'bg-green-500', text: 'text-green-400', border: 'border-green-500' },
-      blue: { bg: 'bg-blue-500', text: 'text-blue-400', border: 'border-blue-500' },
-      red: { bg: 'bg-red-500', text: 'text-red-400', border: 'border-red-500' },
-      purple: { bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-500' }
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
   return (
     <div className="bg-[#0A1124] rounded-lg shadow-xl border border-gray-800">
       {/* Header with Toggle */}
@@ -308,7 +266,7 @@ const DetailedAnalytics: React.FC<DetailedAnalyticsProps> = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {detailedAnalytics.subjectDistribution.map((item) => {
                 const config = SENIOR_ROLE_SUBJECTS[item.subject as keyof typeof SENIOR_ROLE_SUBJECTS];
-                const colors = getColorClasses(config.color);
+                const colors = getSubjectColorClasses(item.subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                 
                 return (
                   <div key={item.subject} className="text-center">
@@ -396,7 +354,7 @@ const DetailedAnalytics: React.FC<DetailedAnalyticsProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {detailedAnalytics.masterySpeed.map((item) => {
                 const config = SENIOR_ROLE_SUBJECTS[item.subject as keyof typeof SENIOR_ROLE_SUBJECTS];
-                const colors = getColorClasses(config.color);
+                const colors = getSubjectColorClasses(item.subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                 
                 return (
                   <div key={item.subject} className="p-4 bg-[#0A1124] rounded-lg border border-gray-700">
@@ -531,7 +489,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
       const consistencyPercentage = (totalDays / expectedStudyDays) * 100;
 
       // Monthly goal (6 hours * 22 days = 132 hours = 7920 minutes)
-      const monthlyGoal = TOTAL_DAILY_GOAL * 22;
+      const monthlyGoal = TOTAL_DAILY_GOAL_MINUTES;
       const monthlyProgress = Math.min(100, (totalMinutes / monthlyGoal) * 100);
 
       return {
@@ -566,7 +524,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
       });
 
       const totalMinutes = Object.values(subjectMinutes).reduce((sum, minutes) => sum + minutes, 0);
-      const goalProgress = (totalMinutes / TOTAL_DAILY_GOAL) * 100;
+      const goalProgress = (totalMinutes / TOTAL_DAILY_GOAL_MINUTES) * 100;
       
       return {
         date,
@@ -671,16 +629,6 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
     return weeklySubjectGoals;
   }, [recentProgress]);
 
-  const getColorClasses = (color: string) => {
-    const colors = {
-      green: { bg: 'bg-green-500', text: 'text-green-400', border: 'border-green-500' },
-      blue: { bg: 'bg-blue-500', text: 'text-blue-400', border: 'border-blue-500' },
-      red: { bg: 'bg-red-500', text: 'text-red-400', border: 'border-red-500' },
-      purple: { bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-500' }
-    };
-    return colors[color as keyof typeof colors] || colors.blue;
-  };
-
   return (
     <div className="space-y-6">
       {/* Header with Readiness Score */}
@@ -737,7 +685,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
               {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject, config]) => {
                 const todayMinutes = todayProgress.subjectMinutes[subject] || 0;
                 const progress = (todayMinutes / config.goal) * 100;
-                const colors = getColorClasses(config.color);
+                const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                 
                 return (
                   <div key={subject} className="text-center">
@@ -802,7 +750,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                 {Object.entries(weeklyGoals).map(([subject, goal]) => {
                   const config = SENIOR_ROLE_SUBJECTS[subject as keyof typeof SENIOR_ROLE_SUBJECTS];
-                  const colors = getColorClasses(config.color);
+                  const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                   
                   return (
                     <div key={subject} className="bg-[#101935] p-3 rounded-lg border border-gray-800">
@@ -886,7 +834,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(weeklyGoals).map(([subject, goal]) => {
                   const config = SENIOR_ROLE_SUBJECTS[subject as keyof typeof SENIOR_ROLE_SUBJECTS];
-                  const colors = getColorClasses(config.color);
+                  const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                   
                   return (
                     <div key={subject} className="bg-[#0A1124] p-4 rounded-lg border border-gray-700">
@@ -983,7 +931,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
                       const dayHours = Math.floor(dayMinutes / 60);
                       const remainingMinutes = dayMinutes % 60;
                       const progress = (dayMinutes / config.goal) * 100;
-                      const colors = getColorClasses(config.color);
+                      const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                       
                       return (
                         <div key={subject} className="text-center">
@@ -1019,7 +967,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
                   </div>
                   <div className="text-xs text-gray-400">Total Hours</div>
                   <div className="text-xs text-green-400 mt-1">
-                    {Math.round((recentProgress.reduce((sum, day) => sum + day.totalMinutes, 0) / (TOTAL_DAILY_GOAL * 7)) * 100)}% of 42h goal
+                    {Math.round((recentProgress.reduce((sum, day) => sum + day.totalMinutes, 0) / (TOTAL_DAILY_GOAL_MINUTES * 7)) * 100)}% of 42h goal
                   </div>
                 </div>
                 
@@ -1076,7 +1024,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject, config]) => {
             const totalHours = Math.floor(overallStats.subjectTotals[subject] / 60);
-            const colors = getColorClasses(config.color);
+            const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
             const streak = overallStats.subjectStreaks[subject];
             
             // Calculate realistic mastery progress
@@ -1221,7 +1169,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
                 {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject, config]) => {
                   const monthHours = Math.floor(month.subjectMinutes[subject] / 60);
-                  const colors = getColorClasses(config.color);
+                  const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                   
                   return (
                     <div key={subject} className="text-center p-2 bg-[#0A1124] rounded">
