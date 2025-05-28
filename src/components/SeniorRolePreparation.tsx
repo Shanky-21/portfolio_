@@ -6,6 +6,7 @@ import { StudySession } from './LearningHeatmap';
 import { 
   SENIOR_ROLE_SUBJECTS, 
   TOTAL_DAILY_GOAL_MINUTES, 
+  MONTHLY_GOAL_MINUTES,
   getSubjectColorClasses 
 } from '@/constants/learningGoals';
 
@@ -483,12 +484,12 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
       monthData.forEach(session => uniqueDates.add(session.date));
       totalDays = uniqueDates.size;
 
-      // Calculate expected vs actual study days (assuming 22 working days per month)
-      const expectedStudyDays = 22;
+      // Calculate expected vs actual study days (assuming daily study for 30 days per month)
+      const expectedStudyDays = 30;
       const consistencyPercentage = (totalDays / expectedStudyDays) * 100;
 
-      // Monthly goal (6 hours * 22 days = 132 hours = 7920 minutes)
-      const monthlyGoal = TOTAL_DAILY_GOAL_MINUTES;
+      // Monthly goal (6 hours * 30 days = 180 hours = 10800 minutes)
+      const monthlyGoal = MONTHLY_GOAL_MINUTES;
       const monthlyProgress = Math.min(100, (totalMinutes / monthlyGoal) * 100);
 
       return {
@@ -1138,7 +1139,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
                 
                 <div className="flex justify-between">
                   <span className="text-gray-400">Study Days</span>
-                  <span className="text-white font-bold">{month.studyDays}/22</span>
+                  <span className="text-white font-bold">{month.studyDays}/30</span>
                 </div>
                 
                 <div className="flex justify-between">

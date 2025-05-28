@@ -49,7 +49,7 @@ export const TOTAL_DAILY_GOAL_HOURS = TOTAL_DAILY_GOAL_MINUTES / 60; // 6 hours
 
 // Weekly and monthly targets
 export const WEEKLY_GOAL_MINUTES = TOTAL_DAILY_GOAL_MINUTES * 7; // 2520 minutes (42 hours)
-export const MONTHLY_GOAL_MINUTES = TOTAL_DAILY_GOAL_MINUTES * 22; // 7920 minutes (132 hours, assuming 22 working days)
+export const MONTHLY_GOAL_MINUTES = TOTAL_DAILY_GOAL_MINUTES * 30; // 10800 minutes (180 hours, assuming daily study for 30 days)
 
 // Goal achievement thresholds
 export const GOAL_ACHIEVEMENT_THRESHOLDS = {
