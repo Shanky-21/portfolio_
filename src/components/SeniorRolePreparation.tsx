@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useMemo, useState } from 'react';
+import { FaGraduationCap, FaCalendarAlt, FaInfoCircle, FaChevronDown, FaChevronUp, FaChartBar, FaBullseye, FaArrowUp, FaArrowDown, FaFireAlt, FaClock, FaAward, FaRocket, FaCrown, FaTrophy } from 'react-icons/fa';
 import { StudySession } from './LearningHeatmap';
-import { FaCode, FaArchway, FaLayerGroup, FaCog, FaTrophy, FaFireAlt, FaBullseye, FaCrown, FaRocket, FaGraduationCap, FaChartBar, FaChevronDown, FaChevronUp, FaArrowUp, FaArrowDown, FaCalendarAlt, FaClock, FaAward, FaInfoCircle } from 'react-icons/fa';
 import { 
   SENIOR_ROLE_SUBJECTS, 
   TOTAL_DAILY_GOAL_MINUTES, 
-  MONTHLY_GOAL_MINUTES,
   getSubjectColorClasses 
 } from '@/constants/learningGoals';
 
@@ -926,11 +925,11 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
                     </div>
                     
                     {/* Subject Columns */}
-                    {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject, config]) => {
+                    {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject]) => {
                       const dayMinutes = day.subjectMinutes[subject] || 0;
                       const dayHours = Math.floor(dayMinutes / 60);
                       const remainingMinutes = dayMinutes % 60;
-                      const progress = (dayMinutes / config.goal) * 100;
+                      const progress = (dayMinutes / SENIOR_ROLE_SUBJECTS[subject as keyof typeof SENIOR_ROLE_SUBJECTS].goal) * 100;
                       const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                       
                       return (
@@ -1167,7 +1166,7 @@ const SeniorRolePreparation: React.FC<SeniorRolePreparationProps> = ({ data }) =
               </div>
               
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject, config]) => {
+                {Object.entries(SENIOR_ROLE_SUBJECTS).map(([subject]) => {
                   const monthHours = Math.floor(month.subjectMinutes[subject] / 60);
                   const colors = getSubjectColorClasses(subject as keyof typeof SENIOR_ROLE_SUBJECTS);
                   

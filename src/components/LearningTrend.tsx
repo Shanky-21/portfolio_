@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { 
   Chart as ChartJS, 
@@ -311,7 +311,6 @@ const LearningTrend: React.FC<LearningTrendProps> = ({ data, selectedTopic }) =>
   const weeklyInsights = useMemo(() => {
     const insights = [];
     const goalMinutes = selectedTopic === "All" ? TOTAL_DAILY_GOAL_MINUTES : SENIOR_ROLE_SUBJECTS[selectedTopic as keyof typeof SENIOR_ROLE_SUBJECTS]?.goal || TOTAL_DAILY_GOAL_MINUTES;
-    const totalMinutes = recentData.reduce((sum, day) => sum + day.minutes, 0);
     const activeDays = recentData.filter(day => day.minutes > 0).length;
     const daysMetGoal = recentData.filter(day => day.minutes >= goalMinutes).length;
     
