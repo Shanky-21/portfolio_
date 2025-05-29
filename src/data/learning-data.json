@@ -78,5 +78,45 @@
     "startTime": "22:47",
     "endTime": "23:54",
     "notes": "Array - Problems"
+  },
+  {
+    "date": "2025-05-29",
+    "topic": "DSA",
+    "minutes": 49,
+    "startTime": "10:03",
+    "endTime": "10:52",
+    "notes": "Array - Problem"
+  },
+  {
+    "date": "2025-05-29",
+    "topic": "Scala",
+    "minutes": 60,
+    "startTime": "12:21",
+    "endTime": "13:21",
+    "notes": "Scala - Basic Questions case classes, Option, etc"
+  },
+  {
+    "date": "2025-05-29",
+    "topic": "Akka",
+    "minutes": 67,
+    "startTime": "16:24",
+    "endTime": "17:31",
+    "notes": "Revision + Persistence"
+  },
+  {
+    "date": "2025-05-29",
+    "topic": "DSA",
+    "minutes": 64,
+    "startTime": "20:34",
+    "endTime": "21:38",
+    "notes": "Array - Problem"
+  },
+  {
+    "date": "2025-05-29",
+    "topic": "DSA",
+    "minutes": 88,
+    "startTime": "22:15",
+    "endTime": "23:43",
+    "notes": "Array - Problems"
   }
 ]
