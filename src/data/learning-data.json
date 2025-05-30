@@ -118,5 +118,29 @@
     "startTime": "22:15",
     "endTime": "23:43",
     "notes": "Array - Problems"
+  },
+  {
+    "date": "2025-05-30",
+    "topic": "DSA",
+    "minutes": 79,
+    "startTime": "10:25",
+    "endTime": "11:44",
+    "notes": "Array - Problems"
+  },
+  {
+    "date": "2025-05-30",
+    "topic": "DSA",
+    "minutes": 93,
+    "startTime": "13:25",
+    "endTime": "14:58",
+    "notes": "Array - Problems"
+  },
+  {
+    "date": "2025-05-30",
+    "topic": "Scala",
+    "minutes": 48,
+    "startTime": "16:32",
+    "endTime": "17:20",
+    "notes": "Monoid vs Monad , creating custom monad"
   }
 ]
