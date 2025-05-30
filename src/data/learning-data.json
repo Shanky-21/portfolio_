@@ -150,5 +150,13 @@
     "startTime": "19:35",
     "endTime": "21:40",
     "notes": "LLD - Designed Tik Tok Toe"
+  },
+  {
+    "date": "2025-05-30",
+    "topic": "Akka",
+    "minutes": 88,
+    "startTime": "22:29",
+    "endTime": "23:57",
+    "notes": "Persistence revision + Clustering"
   }
 ]
