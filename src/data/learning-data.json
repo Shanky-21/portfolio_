@@ -158,5 +158,29 @@
     "startTime": "22:29",
     "endTime": "23:57",
     "notes": "Persistence revision + Clustering"
+  },
+  {
+    "date": "2025-05-31",
+    "topic": "DSA",
+    "minutes": 7,
+    "startTime": "15:33",
+    "endTime": "15:40",
+    "notes": "Array - problems"
+  },
+  {
+    "date": "2025-05-31",
+    "topic": "DSA",
+    "minutes": 46,
+    "startTime": "20:27",
+    "endTime": "21:13",
+    "notes": "Dynamic problems"
+  },
+  {
+    "date": "2025-05-31",
+    "topic": "Scala",
+    "minutes": 36,
+    "startTime": "23:13",
+    "endTime": "23:49",
+    "notes": "self type annotations, one problem - collect method"
   }
 ]
