@@ -198,5 +198,29 @@
     "startTime": "13:21",
     "endTime": "14:59",
     "notes": "Problem solving"
+  },
+  {
+    "date": "2025-06-02",
+    "topic": "System Design",
+    "minutes": 114,
+    "startTime": "23:41",
+    "endTime": "01:35",
+    "notes": "MicroServices vs Monolithis vs Distributed System , their communication protocols"
+  },
+  {
+    "date": "2025-06-02",
+    "topic": "DSA",
+    "minutes": 35,
+    "startTime": "17:05",
+    "endTime": "17:40",
+    "notes": "Array - Sliding Window"
+  },
+  {
+    "date": "2025-06-02",
+    "topic": "DSA",
+    "minutes": 40,
+    "startTime": "18:50",
+    "endTime": "19:30",
+    "notes": "Array - Sliding window Scala Functional approach"
   }
 ]
