@@ -1,13 +1,5 @@
 [
   {
-    "date": "2025-05-01",
-    "topic": "DSA",
-    "minutes": 86,
-    "startTime": "18:13",
-    "endTime": "19:39",
-    "notes": "Problem solving"
-  },
-  {
     "date": "2025-05-24",
     "topic": "DSA",
     "minutes": 75,
@@ -190,6 +182,14 @@
     "startTime": "23:13",
     "endTime": "23:49",
     "notes": "self type annotations, one problem - collect method"
+  },
+  {
+    "date": "2025-06-01",
+    "topic": "DSA",
+    "minutes": 86,
+    "startTime": "18:13",
+    "endTime": "19:39",
+    "notes": "Problem solving"
   },
   {
     "date": "2025-06-01",
