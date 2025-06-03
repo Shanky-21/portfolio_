@@ -262,5 +262,13 @@
     "startTime": "19:58",
     "endTime": "21:02",
     "notes": "Elastic Search,"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "System Design",
+    "minutes": 70,
+    "startTime": "14:54",
+    "endTime": "16:04",
+    "notes": "gRPC, GraphQl, HTTP apis"
   }
 ]
