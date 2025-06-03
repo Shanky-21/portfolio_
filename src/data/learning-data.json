@@ -222,5 +222,45 @@
     "startTime": "18:50",
     "endTime": "19:30",
     "notes": "Array - Sliding window Scala Functional approach"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "DSA",
+    "minutes": 165,
+    "startTime": "22:43",
+    "endTime": "01:28",
+    "notes": "Multiple Questions: Biggest Island, K closest Points, Binary Tree Right Side View, Number of Islands, Merge K sorted Array"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "System Design",
+    "minutes": 60,
+    "startTime": "09:44",
+    "endTime": "10:44",
+    "notes": "Circuit Breaker Patterns"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "System Design",
+    "minutes": 114,
+    "startTime": "11:36",
+    "endTime": "13:30",
+    "notes": "Communication in Monolithics vs Distributed Systems vs Microservices"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "System Design",
+    "minutes": 40,
+    "startTime": "17:18",
+    "endTime": "17:58",
+    "notes": "Saga patterns, Replication Factor, Raft/ Paxos"
+  },
+  {
+    "date": "2025-06-03",
+    "topic": "System Design",
+    "minutes": 64,
+    "startTime": "19:58",
+    "endTime": "21:02",
+    "notes": "Elastic Search,"
   }
 ]
