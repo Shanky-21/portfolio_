@@ -1,13 +1,5 @@
 [
   {
-    "date": "2025-05-04",
-    "topic": "DSA",
-    "minutes": 273,
-    "startTime": "22:47",
-    "endTime": "03:20",
-    "notes": "{"
-  },
-  {
     "date": "2025-05-24",
     "topic": "DSA",
     "minutes": 75,
@@ -280,7 +272,7 @@
     "notes": "gRPC, GraphQl, HTTP apis"
   },
   {
-    "date": "2025-05-04",
+    "date": "2025-06-04",
     "topic": "DSA",
     "minutes": 273,
     "startTime": "22:47",
