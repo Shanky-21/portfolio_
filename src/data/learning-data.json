@@ -280,6 +280,14 @@
     "notes": "gRPC, GraphQl, HTTP apis"
   },
   {
+    "date": "2025-05-04",
+    "topic": "DSA",
+    "minutes": 273,
+    "startTime": "22:47",
+    "endTime": "03:20",
+    "notes": "Solved questions like - Tasks Scheduling, Median of a Number System, Merge Intervals, ZigZag Traversal"
+  },
+  {
     "date": "2025-06-05",
     "topic": "Scala",
     "minutes": 75,
