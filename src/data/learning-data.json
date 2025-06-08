@@ -310,5 +310,25 @@
     "startTime": "23:30",
     "endTime": "00:30",
     "notes": "Whatsapp"
-  }
+  },
+  {
+    "date": "2025-06-06",
+    "topic": "DSA",
+    "minutes": 90,
+    "notes": "Solved question like: Generate Parenthesis, Longest substring without repeating characters"
+  },
+  {
+    "date": "2025-06-07",
+    "topic": "System Design",
+    "minutes": 60,
+    "notes": "Basic of System Design"
+  },
+
+  {
+    "date": "2025-06-07",
+    "topic": "DSA",
+    "minutes": 40,
+    "notes": "min cost to connect all points"
+  },
+
 ]
