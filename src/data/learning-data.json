@@ -323,12 +323,34 @@
     "minutes": 60,
     "notes": "Basic of System Design"
   },
-
   {
     "date": "2025-06-07",
     "topic": "DSA",
     "minutes": 40,
     "notes": "min cost to connect all points"
+  },
+  {
+    "date": "2025-06-08",
+    "topic": "DSA",
+    "minutes": 255,
+    "startTime": "03:15",
+    "endTime": "07:30",
+    "notes": "Binary Search applications, Network Delay"
+  },
+  {
+    "date": "2025-06-08",
+    "topic": "System Design",
+    "minutes": 120,
+    "startTime": "19:10",
+    "endTime": "21:10",
+    "notes": "Scalability + RAID ( Redundant Array of Independent Discs"
+  },
+  {
+    "date": "2025-06-08",
+    "topic": "System Design",
+    "minutes": 780,
+    "startTime": "21:42",
+    "endTime": "10:42",
+    "notes": "MemCache + What if cache gets filled, Active Active vs Active Passive Replication Strategies"
   }
-
 ]
