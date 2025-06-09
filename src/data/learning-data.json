@@ -348,9 +348,9 @@
   {
     "date": "2025-06-08",
     "topic": "System Design",
-    "minutes": 780,
+    "minutes": 60,
     "startTime": "21:42",
-    "endTime": "10:42",
+    "endTime": "22:42",
     "notes": "MemCache + What if cache gets filled, Active Active vs Active Passive Replication Strategies"
   }
 ]
