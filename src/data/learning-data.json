@@ -352,5 +352,29 @@
     "startTime": "21:42",
     "endTime": "22:42",
     "notes": "MemCache + What if cache gets filled, Active Active vs Active Passive Replication Strategies"
+  },
+  {
+    "date": "2025-06-09",
+    "topic": "System Design",
+    "minutes": 177,
+    "startTime": "04:45",
+    "endTime": "07:42",
+    "notes": "Clones, Deployment, Database - Vertical / Horizontal, Cache - Database Queries vs Objects, Asynchronism - pre- computation, specific job queue, Performance vs scalability, Latency vs throughput, Failover, FailBack, Replication, Tree Replication, Buddy Replicatioon"
+  },
+  {
+    "date": "2025-06-09",
+    "topic": "System Design",
+    "minutes": 43,
+    "startTime": "16:22",
+    "endTime": "17:05",
+    "notes": "CAP Theorem, Weak Consistency, Eventual Consistency, Strong Consistency, Availability in numbers, Availability in Parallel vs sequence, Domain name System"
+  },
+  {
+    "date": "2025-06-09",
+    "topic": "System Design",
+    "minutes": 46,
+    "startTime": "21:00",
+    "endTime": "21:46",
+    "notes": "CDN, Push vs Pull CDN, Pros and Cons, LB, Horizontal Scaling, Pros + Cons, Reverse proxy, LB vs Reverse Proxy. Pros vs Cons."
   }
 ]
