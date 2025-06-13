@@ -377,7 +377,8 @@
     "endTime": "21:46",
     "notes": "CDN, Push vs Pull CDN, Pros and Cons, LB, Horizontal Scaling, Pros + Cons, Reverse proxy, LB vs Reverse Proxy. Pros vs Cons."
   },
-  {"date": "2025-06-09",
+  {
+    "date": "2025-06-09",
     "topic": "DSA",
     "minutes": 70,
     "startTime": "23:33",
@@ -407,5 +408,37 @@
     "startTime": "00:25",
     "endTime": "01:25",
     "notes": "Netflix System Design"
+  },
+  {
+    "date": "2025-06-11",
+    "topic": "System Design",
+    "minutes": 150,
+    "startTime": "22:10",
+    "endTime": "00:40",
+    "notes": "Tinder / Bumble Design"
+  },
+  {
+    "date": "2025-06-11",
+    "topic": "DSA",
+    "minutes": 90,
+    "startTime": "14:30",
+    "endTime": "16:00",
+    "notes": "Problem Solving Partial Equal Subset Sum"
+  },
+  {
+    "date": "2025-06-12",
+    "topic": "System Design",
+    "minutes": 170,
+    "startTime": "21:50",
+    "endTime": "00:40",
+    "notes": "Uber System Design"
+  },
+  {
+    "date": "2025-06-12",
+    "topic": "DSA",
+    "minutes": 240,
+    "startTime": "14:00",
+    "endTime": "18:00",
+    "notes": "DSA - Problem Solving - Longest Palindromic Subsequence, LCS, Course Schedule, Network Delay Time, Implement Trie."
   }
 ]
