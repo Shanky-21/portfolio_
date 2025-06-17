@@ -440,5 +440,53 @@
     "startTime": "14:00",
     "endTime": "18:00",
     "notes": "DSA - Problem Solving - Longest Palindromic Subsequence, LCS, Course Schedule, Network Delay Time, Implement Trie."
+  },
+  {
+    "date": "2025-06-13",
+    "topic": "System Design",
+    "minutes": 60,
+    "startTime": "18:30",
+    "endTime": "19:30",
+    "notes": "LLD"
+  },
+  {
+    "date": "2025-06-13",
+    "topic": "DSA",
+    "minutes": 60,
+    "startTime": "12:30",
+    "endTime": "13:30",
+    "notes": "Word Search"
+  },
+  {
+    "date": "2025-06-14",
+    "topic": "System Design",
+    "minutes": 180,
+    "startTime": "12:30",
+    "endTime": "15:30",
+    "notes": "LLD"
+  },
+  {
+    "date": "2025-06-15",
+    "topic": "System Design",
+    "minutes": 240,
+    "startTime": "06:30",
+    "endTime": "10:30",
+    "notes": "LLD - Parking Lot, TicTacToe"
+  },
+  {
+    "date": "2025-06-16",
+    "topic": "System Design",
+    "minutes": 240,
+    "startTime": "06:30",
+    "endTime": "10:30",
+    "notes": "LLD - Elevator System, Car Rental System."
+  },
+  {
+    "date": "2025-06-16",
+    "topic": "System Design",
+    "minutes": 180,
+    "startTime": "15:30",
+    "endTime": "18:30",
+    "notes": "LLD - Meeting Scheduler, BookMyShowDesign"
   }
 ]
