@@ -488,5 +488,21 @@
     "startTime": "15:30",
     "endTime": "18:30",
     "notes": "LLD - Meeting Scheduler, BookMyShowDesign"
+  },
+  {
+    "date": "2025-06-17",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "12:00",
+    "endTime": "15:00",
+    "notes": "Solved Problems - Kadane's Algorithm, Minimum Platforms, Longest Increasing Subsequence"
+  },
+  {
+    "date": "2025-06-17",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "18:00",
+    "endTime": "21:00",
+    "notes": "DSA"
   }
 ]
