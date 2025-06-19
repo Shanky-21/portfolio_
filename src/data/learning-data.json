@@ -504,5 +504,29 @@
     "startTime": "18:00",
     "endTime": "21:00",
     "notes": "DSA"
+  },
+  {
+    "date": "2025-06-18",
+    "topic": "DSA",
+    "minutes": 120,
+    "startTime": "09:30",
+    "endTime": "11:30",
+    "notes": "Problems - Sort Colors, Insert Intervals,  Top k Frequent Elements."
+  },
+  {
+    "date": "2025-06-18",
+    "topic": "DSA",
+    "minutes": 80,
+    "startTime": "00:10",
+    "endTime": "01:30",
+    "notes": "Binary Tree Postorder Traversal, Pre-order Traversal, Level order traversal."
+  },
+  {
+    "date": "2025-06-18",
+    "topic": "DSA",
+    "minutes": 90,
+    "startTime": "18:00",
+    "endTime": "19:30",
+    "notes": "DSA - Python Basic - Map, filter, etc."
   }
 ]
