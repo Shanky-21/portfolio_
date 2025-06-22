@@ -528,5 +528,37 @@
     "startTime": "18:00",
     "endTime": "19:30",
     "notes": "DSA - Python Basic - Map, filter, etc."
+  },
+  {
+    "date": "2025-06-19",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "09:30",
+    "endTime": "12:30",
+    "notes": "DSA - Problem solving"
+  },
+  {
+    "date": "2025-06-20",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "09:30",
+    "endTime": "12:30",
+    "notes": "Maximum Depth of a binary tree, Balanced Binary Tree,"
+  },
+  {
+    "date": "2025-06-20",
+    "topic": "DSA",
+    "minutes": 90,
+    "startTime": "18:00",
+    "endTime": "19:30",
+    "notes": "Symmetric Tree, Vertical order traversal."
+  },
+  {
+    "date": "2025-06-21",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "18:30",
+    "endTime": "21:30",
+    "notes": "Climbing Stairs, House Robber 1, House Robber 2"
   }
 ]
