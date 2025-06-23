@@ -560,5 +560,21 @@
     "startTime": "18:30",
     "endTime": "21:30",
     "notes": "Climbing Stairs, House Robber 1, House Robber 2"
+  },
+  {
+    "date": "2025-06-22",
+    "topic": "DSA",
+    "minutes": 80,
+    "startTime": "13:10",
+    "endTime": "14:30",
+    "notes": "Problem Solving: Unique Paths, Longest Palindromic Substring, Unique Paths - 2, Minimum Path Sum."
+  },
+  {
+    "date": "2025-06-22",
+    "topic": "DSA",
+    "minutes": 90,
+    "startTime": "20:00",
+    "endTime": "21:30",
+    "notes": "Partition Equal Subset Sum, Best Time to Buy sell stock, Word Break."
   }
 ]
