@@ -576,5 +576,61 @@
     "startTime": "20:00",
     "endTime": "21:30",
     "notes": "Partition Equal Subset Sum, Best Time to Buy sell stock, Word Break."
+  },
+  {
+    "date": "2025-06-23",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "18:30",
+    "endTime": "21:30",
+    "notes": "DSA - problem solving"
+  },
+  {
+    "date": "2025-06-24",
+    "topic": "DSA",
+    "minutes": 180,
+    "startTime": "08:30",
+    "endTime": "11:30",
+    "notes": "DSA Problems ( Graphs )"
+  },
+  {
+    "date": "2025-06-24",
+    "topic": "DSA",
+    "minutes": 160,
+    "startTime": "12:50",
+    "endTime": "15:30",
+    "notes": "DSA Problem Solving"
+  },
+  {
+    "date": "2025-06-25",
+    "topic": "System Design",
+    "minutes": 65,
+    "startTime": "23:45",
+    "endTime": "00:50",
+    "notes": "System design"
+  },
+  {
+    "date": "2025-06-25",
+    "topic": "System Design",
+    "minutes": 60,
+    "startTime": "21:30",
+    "endTime": "22:30",
+    "notes": "Sql vs Nosql"
+  },
+  {
+    "date": "2025-06-26",
+    "topic": "System Design",
+    "minutes": 70,
+    "startTime": "06:50",
+    "endTime": "08:00",
+    "notes": "DSA Database 2-phase commit, 3-phase commit, saga pattern"
+  },
+  {
+    "date": "2025-06-26",
+    "topic": "System Design",
+    "minutes": 60,
+    "startTime": "08:30",
+    "endTime": "09:30",
+    "notes": "System Design - Concurrency Control"
   }
 ]
