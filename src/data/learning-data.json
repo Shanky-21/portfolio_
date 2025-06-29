@@ -632,5 +632,13 @@
     "startTime": "08:30",
     "endTime": "09:30",
     "notes": "System Design - Concurrency Control"
+  },
+  {
+    "date": "2025-06-27",
+    "topic": "System Design",
+    "minutes": 110,
+    "startTime": "15:10",
+    "endTime": "17:00",
+    "notes": "HLD"
   }
 ]
