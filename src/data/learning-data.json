@@ -640,5 +640,13 @@
     "startTime": "15:10",
     "endTime": "17:00",
     "notes": "HLD"
+  },
+  {
+    "date": "2025-07-07",
+    "topic": "System Design",
+    "minutes": 100,
+    "startTime": "21:30",
+    "endTime": "23:10",
+    "notes": "Learned About LB - Layer - 4 ,Layer -7, NAT, OSI Layer , TCP/IP layer"
   }
 ]
