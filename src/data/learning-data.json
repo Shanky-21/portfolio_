@@ -648,5 +648,13 @@
     "startTime": "21:30",
     "endTime": "23:10",
     "notes": "Learned About LB - Layer - 4 ,Layer -7, NAT, OSI Layer , TCP/IP layer"
+  },
+  {
+    "date": "2025-07-08",
+    "topic": "System Design",
+    "minutes": 78,
+    "startTime": "22:02",
+    "endTime": "23:20",
+    "notes": "NGINX Architecture - How we design for performance and scale URL - https://blog.nginx.org/blog/inside-nginx-how-we-designed-for-performance-scale"
   }
 ]
