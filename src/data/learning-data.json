@@ -656,5 +656,13 @@
     "startTime": "22:02",
     "endTime": "23:20",
     "notes": "NGINX Architecture - How we design for performance and scale URL - https://blog.nginx.org/blog/inside-nginx-how-we-designed-for-performance-scale"
+  },
+  {
+    "date": "2025-07-09",
+    "topic": "System Design",
+    "minutes": 124,
+    "startTime": "21:40",
+    "endTime": "23:44",
+    "notes": "Learned about ELB URL :https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html , HAProxy Architecture : https://www.haproxy.org/download/1.2/doc/architecture.txt , Introduction to architecturing systems for scale : https://lethain.com/introduction-to-architecting-systems-for-scale and Reverse proxy vs Load Balancer : https://www.f5.com/glossary/reverse-proxy"
   }
 ]
