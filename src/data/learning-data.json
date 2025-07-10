@@ -664,5 +664,21 @@
     "startTime": "21:40",
     "endTime": "23:44",
     "notes": "Learned about ELB URL :https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html , HAProxy Architecture : https://www.haproxy.org/download/1.2/doc/architecture.txt , Introduction to architecturing systems for scale : https://lethain.com/introduction-to-architecting-systems-for-scale and Reverse proxy vs Load Balancer : https://www.f5.com/glossary/reverse-proxy"
+  },
+  {
+    "date": "2025-07-10",
+    "topic": "System Design",
+    "minutes": 69,
+    "startTime": "18:00",
+    "endTime": "19:09",
+    "notes": "about X.509 certifcate URL : https://en.wikipedia.org/wiki/X.509, Service Discovery - read about Consul : https://www.consul.io/docs/index.html, also high level about ETCD : https://etcd.io/, also about zookeeper : https://www.slideshare.net/sauravhaloi/introduction-to-apache-zookeeper ( a good ppt which can be helpful )"
+  },
+  {
+    "date": "2025-07-10",
+    "topic": "DSA",
+    "minutes": 50,
+    "startTime": "23:40",
+    "endTime": "00:30",
+    "notes": "Solved Recursive DSA problem - https://leetcode.com/problems/string-to-integer-atoi/"
   }
 ]
