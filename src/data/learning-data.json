@@ -680,5 +680,21 @@
     "startTime": "23:40",
     "endTime": "00:30",
     "notes": "Solved Recursive DSA problem - https://leetcode.com/problems/string-to-integer-atoi/"
+  },
+  {
+    "date": "2025-07-11",
+    "topic": "System Design",
+    "minutes": 90,
+    "startTime": "18:00",
+    "endTime": "19:30",
+    "notes": "Saw a video about Transactions across Datacentres. Understood about some of the challenges and tradeoffs when choosing different database patterns like master slave, master master, PAXOS, and understood why its hard to maintain consistency and with low latency across two different data centres, also about multihoming."
+  },
+  {
+    "date": "2025-07-11",
+    "topic": "DSA",
+    "minutes": 60,
+    "startTime": "03:00",
+    "endTime": "04:00",
+    "notes": "Solved one problem - https://leetcode.com/problems/powx-n/"
   }
 ]
